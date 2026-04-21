@@ -1,4 +1,5 @@
 import "./styles.css"
+import dom from "./dom.js"
 
 class Project {
     constructor(name) {
@@ -72,19 +73,6 @@ class Task {
         this._priority = priority
     }
 }
+const addProject = document.getElementById("addProject")
 
-const project = new Project(Project)
-
-const task1 = new Task("todo1", "7pm", "work on code", 2)
-const task2 = new Task("todo2", "10pm", "do anki cards", 3)
-const task3 = new Task("todo3", "April 28th", "watch the tourney", 1)
-
-project.addTask(task1)
-project.addTask(task2)
-project.addTask(task3)
-
-console.log(project.tasks)
-project.removeTask(task2)
-project.removeTask(task3)
-
-console.log(task1.name,task1.dueDate,task1.description,task1.priority);
+addProject.addEventListener("click", dom.addProject)
