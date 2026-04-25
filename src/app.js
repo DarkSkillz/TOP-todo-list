@@ -1,78 +1,55 @@
 import "./styles.css"
-import dom from "./dom.js"
+import index from "./index.js"
 
-class Project {
-    constructor(name) {
-        this._name = name
-        this._tasks = []
-        this._complete = []
+const addToDOM = (() => {
+    const main = document.querySelector("main")
+    const aside = document.querySelector("aside")
+
+    const projectTextInput = document.createElement("input")
+    projectTextInput.type = "text"
+    projectTextInput.placeholder = "Enter project name"
+    projectTextInput.name = "projectName"
+
+    const projectButton = document.createElement("button")
+    projectButton.innerText = "Add Project"
+    projectButton.id = "projectButton"
+    
+    const projectLabel = document.createElement("label")
+    projectLabel.for = "projectName"
+    projectLabel.innerText = "Please enter a name"
+
+    const addProjectUI = () => {
+        document.body.append(projectTextInput, projectButton)
     }
 
-    get name() {
-        return this._name
+    const addProject = () => {
+        if (projectTextInput.value == "") {
+            document.body.append(projectLabel)
+        }
+        else {
+            const projectHeadingAside = document.createElement("h1")
+            const projectHeadingMain = document.createElement("h1")
+
+            projectHeadingAside.innerText = projectTextInput.value
+            projectHeadingMain.innerText = projectTextInput.value
+            index.addProject(projectTextInput.value)
+            projectTextInput.value = ""
+
+            if (document.body.contains(projectLabel)) {
+                document.body.removeChild(projectLabel)
+            }
+
+            aside.append(projectHeadingAside)
+            main.append(projectHeadingMain)
+        }
     }
 
-    get tasks() {
-        return this._tasks
-    }
+    return {addProjectUI, addProject}
+})()
 
-    set name(name) {
-        this._name = name
-    }
-
-    addTask(task) {
-        this._tasks.push(task) 
-    }
-
-    addComplete(task) {
-        this._complete.push(task)
-    }
-
-    removeTask(task) {
-        this._tasks.splice(this._tasks.indexOf(task),1)
-    }
-}
-
-class Task {
-    constructor(name, dueDate, description, priority) {
-        this._name = name
-        this._dueDate = dueDate
-        this._description = description
-        this._priority = priority
-    }
-
-    get name() {
-        return this._name
-    }
-
-    get dueDate() {
-        return this._dueDate
-    }
-
-    get description() {
-        return this._description
-    }
-
-    get priority() {
-        return this._priority
-    }
-
-    set name(name) {
-        this._name = name
-    }
-
-    set dueDate(date) {
-        this._dueDate = date
-    }
-
-    set description(description) {
-        this._description = description
-    }
-
-    set priority(priority) {
-        this._priority = priority
-    }
-}
 const addProject = document.getElementById("addProject")
 
-addProject.addEventListener("click", dom.addProject)
+addProject.addEventListener("click", () => {
+    addToDOM.addProjectUI()
+    projectButton.addEventListener("click", addToDOM.addProject)
+})
