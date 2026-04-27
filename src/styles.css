@@ -13,3 +13,13 @@ aside {
     top: 300px;
     left: 800px;
 }
+
+svg {
+    fill: #fff;
+    width: 50px;
+}
+
+#projectFrameAside, #projectFrameMain {
+    display: flex;
+    justify-content: space-between;
+}

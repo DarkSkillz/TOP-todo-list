@@ -89,5 +89,4 @@ const index = (() => {
 })()
 export default index
 
-/* Add array for projects to easily remove them */
-/* Add function to handle tasks */
+//todo Add function to handle tasks
