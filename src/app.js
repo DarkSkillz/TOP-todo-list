@@ -1,55 +1,47 @@
 import "./styles.css"
 import index from "./index.js"
+import elements from "./elements.js"
 
 const addToDOM = (() => {
     const main = document.querySelector("main")
     const aside = document.querySelector("aside")
 
-    const projectTextInput = document.createElement("input")
-    projectTextInput.type = "text"
-    projectTextInput.placeholder = "Enter project name"
-    projectTextInput.name = "projectName"
-
-    const projectButton = document.createElement("button")
-    projectButton.innerText = "Add Project"
-    projectButton.id = "projectButton"
-    
-    const projectLabel = document.createElement("label")
-    projectLabel.for = "projectName"
-    projectLabel.innerText = "Please enter a name"
-
     const addProjectUI = () => {
-        document.body.append(projectTextInput, projectButton)
+        document.body.append(elements.projectInputFrame)
+    }
+
+    const removeProjectUI = () => {
+        document.body.removeChild(elements.projectInputFrame)
     }
 
     const addProject = () => {
-        if (projectTextInput.value == "") {
-            document.body.append(projectLabel)
+        if (elements.projectTextInput.value == "") {
+            elements.projectInputFrame.append(elements.projectLabel)
         }
         else {
             const projectHeadingAside = document.createElement("h1")
             const projectHeadingMain = document.createElement("h1")
 
-            projectHeadingAside.innerText = projectTextInput.value
-            projectHeadingMain.innerText = projectTextInput.value
-            index.addProject(projectTextInput.value)
-            projectTextInput.value = ""
+            projectHeadingAside.innerText = elements.projectTextInput.value
+            projectHeadingMain.innerText = elements.projectTextInput.value
+            index.addProject(elements.projectTextInput.value)
+            elements.projectTextInput.value = ""
 
-            if (document.body.contains(projectLabel)) {
-                document.body.removeChild(projectLabel)
+            if (elements.projectInputFrame.contains(elements.projectLabel)) {
+                elements.projectInputFrame.removeChild(elements.projectLabel)
             }
-
+            addToDOM.removeProjectUI()
             aside.append(projectHeadingAside)
             main.append(projectHeadingMain)
         }
     }
 
-    return {addProjectUI, addProject}
+    return {addProjectUI, removeProjectUI ,addProject}
 })()
 
 const addProject = document.getElementById("addProject")
 
 addProject.addEventListener("click", () => {
     addToDOM.addProjectUI()
-    projectButton.addEventListener("click", addToDOM.addProject)
+    elements.projectButton.addEventListener("click", addToDOM.addProject)
 })

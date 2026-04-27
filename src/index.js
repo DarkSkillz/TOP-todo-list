@@ -72,12 +72,22 @@ class Task {
 }
 
 const index = (() => {
+    const projects = []
+
     const addProject = (name) => {
         const newProject = new Project(name)
-        console.log(newProject);
-        
+        projects.push(newProject)
+        console.log(projects);
+    }
+
+    const removeProject = (name) => {
+        projects.splice(projects.indexOf(name),1)
+        console.log(projects);
     }
 
     return {addProject}
 })()
 export default index
+
+/* Add array for projects to easily remove them */
+/* Add function to handle tasks */
