@@ -1,0 +1,27 @@
+Todos:
+
+make js file for classes
+look into this element class
+create project and task classes
+js file for styling perhaps ?
+learn how to work with date fns module
+
+Pseudo:
+
+Project has:
+    name
+    task list
+
+Task has:
+    name
+    due date
+    priority
+    status (completed/not completed)
+    parent project
+
+Librarian can:
+    access projects and tasks
+    add tasks to project task list
+    remove tasks from project task list
+    edit project names
+    edit task settings
