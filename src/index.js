@@ -85,7 +85,11 @@ const index = (() => {
         console.log(projects);
     }
 
-    return {addProject}
+    const addTask = (name, dueDate, description, priority) => {
+        const newTask = new Task(name, dueDate, description, priority)
+    }
+
+    return {addProject, removeProject, addTask}
 })()
 export default index
 

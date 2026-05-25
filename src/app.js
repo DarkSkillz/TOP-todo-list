@@ -51,12 +51,26 @@ const addToDOM = (() => {
             aside.append(projectFrameAside)
             main.append(projectFrameMain)
 
-            projectSettingsAside.addEventListener("click", addToDOM.displayProjectSettings)
+            // why this no work
+            projectSettingsAside.addEventListener("click",()=>{console.log("good")})
         }
     }
 
     const displayProjectSettings = () => {
         //todo Display the options for EDIT and DELETE 
+        console.log("good");
+
+        const settingsFrame = document.createElement("div")
+        settingsFrame.id = "settingsFrame"
+
+        const settingsEdit = document.createElement("div")
+        const settingsDelete = document.createElement("div")
+        settingsEdit.id = "settingsEdit"
+        settingsDelete.id = "settingsDelete"
+
+        settingsFrame.append(settingsEdit, settingsDelete)
+
+        document.body.append(settingsFrame)
     }
 
     const editProjectName = () => {
