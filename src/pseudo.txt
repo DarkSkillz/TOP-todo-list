@@ -5,6 +5,9 @@ look into this element class
 create project and task classes
 js file for styling perhaps ?
 learn how to work with date fns module
+make js file for UI handling
+make js file for loading tabs
+the main js file (index) handles their event listeners perhaps ? 
 
 Pseudo:
 
@@ -20,8 +23,6 @@ Task has:
     parent project
 
 Librarian can:
-    access projects and tasks
-    add tasks to project task list
-    remove tasks from project task list
-    edit project names
-    edit task settings
+    access all project list
+    return said list
+    add/delete projects from list
