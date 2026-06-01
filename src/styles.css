@@ -1,0 +1,28 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: 
+    "aside header"
+    "aside main";
+}
+
+header {
+    grid-area: header;
+    border: 1px solid red;
+}
+
+aside {
+    grid-area: aside;
+    border: 1px solid blue;
+}
+
+main {
+    grid-area: main;
+    border: 1px solid purple;
+}
