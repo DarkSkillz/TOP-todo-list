@@ -17,6 +17,11 @@ projects[2].addTask(new Task("Task2","30th May 2026", "Low","Not Completed", pro
 
 Librarian.deleteProject(project1)
 
-handleUI.addProjectForm()
-handleUI.taskCreationForm()
-handleUI.deleteConfirmBox()
+const aside = document.querySelector("aside")
+const addProjectBtn = document.querySelector(".addProjectBtn")
+
+addProjectBtn.addEventListener("click",()=>{
+    if (!aside.contains(aside.querySelector(".addProjectForm"))) {
+        handleUI.addProjectForm()
+    }
+})
