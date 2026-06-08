@@ -26,3 +26,11 @@ main {
     grid-area: main;
     border: 1px solid purple;
 }
+
+.hidden {
+/*     display: none; */
+}
+
+.cancelSVG {
+    width: 30px;
+}

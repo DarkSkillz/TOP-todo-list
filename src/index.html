@@ -15,11 +15,6 @@
     <aside>
         <div class="addProjectHolder">
             <button class="addProjectBtn">Add Project</button>
-            <!--! Debug only -->
-            <form class="addProjectform">
-                <input type="text" placeholder="project name">
-                <input type="submit" value="Confirm">
-            </form>
         </div>
         <div class="projectList">
             <p>Your Project</p>
@@ -52,43 +47,9 @@
                 </div>
             </div>
         </section>
-
-        <!--! Debug only -->
-        <form class="taskCreationForm">
-            <span>Cancel</span> <!-- Will be replaced with SVG -->
-            <div class="taskNameInputDiv">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" required>
-            </div>
-            <div class="taskDateInputDiv">
-                <label for="date">Date</label>
-                <input type="text" name="date" id="date" required>
-            </div>
-            <div class="taskPriorityInputDiv">
-                <label for="priority">Priority</label>
-                <select name="priority" id="priority">
-                    <option value="high">High</option>
-                    <option value="med">Medium</option>
-                    <option value="low">Low</option>
-                </select>
-            </div>
-            <div class="taskStatusInputDiv">
-                <label for="completed">Completed</label>
-                <input type="radio" name="status" value="completed" id="completed" >
-                <label for="not completed">Not Completed</label>
-                <input type="radio" name="status" value="not completed" id="not completed" checked>
-            </div>
-            <input type="submit" value="Add Task">
-        </form>
-
-        <!--! Debug only -->
-        <div class="deleteConfirmBox">
-            <p>Are you sure you want to delete "project/task" ?</p>
-            <div class="deleteConfirmOptions">
-                <button class="deleteConfirmYes">Yes</button>
-                <button class="deleteConfirmNo">No</button>
-            </div>
-        </div>
     </main>
 </body>
 </html>
+
+
+
