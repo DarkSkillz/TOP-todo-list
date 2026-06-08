@@ -9,13 +9,17 @@ const handleUI = (() => {
     const inputText = document.createElement("input")
     inputText.setAttribute("type","text")
     inputText.setAttribute("placeholder","Project name")
+    inputText.className = "addFormProjectInputText"
 
     const inputSubmitProject = document.createElement("input")
     inputSubmitProject.setAttribute("type","submit")
     inputSubmitProject.setAttribute("value","Confirm")
-    inputSubmitProject.className = "addProjectBtn"
+    inputSubmitProject.className = "inputSubmitProject"
 
     formProject.append(inputText,inputSubmitProject)
+
+    const addProjectFormErr = document.createElement("p")
+    addProjectFormErr.innerText = "Please enter a name!"
 
     const addProjectForm = () => {
         aside.append(formProject)

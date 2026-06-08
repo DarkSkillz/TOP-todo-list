@@ -23,5 +23,21 @@ const addProjectBtn = document.querySelector(".addProjectBtn")
 addProjectBtn.addEventListener("click",()=>{
     if (!aside.contains(aside.querySelector(".addProjectForm"))) {
         handleUI.addProjectForm()
+
+        const inputText = document.querySelector(".addFormProjectInputText")
+        const formProject = document.querySelector(".inputSubmitProject")
+        inputText.style.borderColor = "black"
+        formProject.addEventListener("click",(e) => {
+            e.preventDefault()
+            if (inputText.value == "") {
+                inputText.style.borderColor = "red"
+            }
+            else {
+                //todo add project through librarian
+                inputText.value = ""
+                handleUI.addProjectFormRemove()
+            }
+        })
     }
+    
 })
