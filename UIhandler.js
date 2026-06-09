@@ -161,7 +161,19 @@ const handleUI = (() => {
         main.removeChild(deleteConfirmBoxDiv)
     }
 
-    return {addProjectForm, addProjectFormRemove, taskCreationForm, taskCreationFormRemove, deleteConfirmBox, deleteConfirmBoxRemove}
+    //* Adding projects to DOM
+    const unorderedList = document.querySelector(".projectList")
+
+    const addProjectToDOM = (projectArray) => {
+        unorderedList.replaceChildren()
+        for (let i = 0; i < projectArray.length; i++) {
+            const listItem = document.createElement("li")
+            listItem.innerText = projectArray[i].name
+            unorderedList.append(listItem)
+        }
+    }
+
+    return {addProjectForm, addProjectFormRemove, taskCreationForm, taskCreationFormRemove, deleteConfirmBox, deleteConfirmBoxRemove, addProjectToDOM}
 })()
 
 export default handleUI
