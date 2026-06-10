@@ -169,6 +169,7 @@ const UIhandler = (() => {
         for (let i = 0; i < projectArray.length; i++) {
             const listItem = document.createElement("li")
             listItem.innerText = projectArray[i].name
+            listItem.className = "projectItem"
             unorderedList.append(listItem)
         }
     }

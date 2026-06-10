@@ -1,6 +1,7 @@
 import "./styles.css"; 
 import { Project, Task, Librarian } from "../classes.js";
-import UIhandler from "../UIhandler.js";
+import UIhandler from "../UIHandler.js";
+import tabLoader from "../tabLoader.js"
 
 /* const project0 = new Project("Project0")
 const project1 = new Project("Project1")
@@ -24,21 +25,32 @@ addProjectBtn.addEventListener("click",()=>{
     if (!aside.contains(aside.querySelector(".addProjectForm"))) {
         UIhandler.addProjectForm()
 
-        const inputText = document.querySelector(".addFormProjectInputText")
-        const formProject = document.querySelector(".inputSubmitProject")
+        const inputText = aside.querySelector(".addFormProjectInputText")
+        const formProject = aside.querySelector(".inputSubmitProject")
+        const projectItems = aside.getElementsByClassName("projectItem")
         inputText.style.borderColor = "black"
         formProject.addEventListener("click",(e) => {
             e.preventDefault()
+            // Check for name validation
             if (inputText.value == "") {
                 inputText.style.borderColor = "red"
             }
+            // Add project for Librarian and DOM
             else {
                 Librarian.addProject(String(inputText.value))
                 UIhandler.addProjectToDOM(Librarian.getAllProjects())
                 inputText.value = ""
                 UIhandler.addProjectFormRemove()
+                // Event Listeners for Projects
+                for (let i = 0; i < projectItems.length; i++) {
+                    projectItems[i].addEventListener("click",()=>{
+                        tabLoader.loadProject(projectItems[i].innerText)
+                    })
+                }
             }
         })
     }
-    
 })
+
+Librarian.addProject("Default Project")
+tabLoader.loadProject("Default Project")
