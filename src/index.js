@@ -1,6 +1,6 @@
 import "./styles.css"; 
 import { Project, Task, Librarian } from "../classes.js";
-import handleUI from "../UIhandler.js";
+import UIhandler from "../UIhandler.js";
 
 /* const project0 = new Project("Project0")
 const project1 = new Project("Project1")
@@ -22,7 +22,7 @@ const addProjectBtn = document.querySelector(".addProjectBtn")
 
 addProjectBtn.addEventListener("click",()=>{
     if (!aside.contains(aside.querySelector(".addProjectForm"))) {
-        handleUI.addProjectForm()
+        UIhandler.addProjectForm()
 
         const inputText = document.querySelector(".addFormProjectInputText")
         const formProject = document.querySelector(".inputSubmitProject")
@@ -33,11 +33,10 @@ addProjectBtn.addEventListener("click",()=>{
                 inputText.style.borderColor = "red"
             }
             else {
-                //todo add project through librarian
                 Librarian.addProject(String(inputText.value))
-                handleUI.addProjectToDOM(Librarian.getAllProjects())
+                UIhandler.addProjectToDOM(Librarian.getAllProjects())
                 inputText.value = ""
-                handleUI.addProjectFormRemove()
+                UIhandler.addProjectFormRemove()
             }
         })
     }

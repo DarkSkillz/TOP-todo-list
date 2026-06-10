@@ -1,4 +1,4 @@
-const handleUI = (() => {
+const UIhandler = (() => {
     const aside = document.querySelector("aside")
     const main = document.querySelector("main")
 
@@ -173,7 +173,55 @@ const handleUI = (() => {
         }
     }
 
-    return {addProjectForm, addProjectFormRemove, taskCreationForm, taskCreationFormRemove, deleteConfirmBox, deleteConfirmBoxRemove, addProjectToDOM}
+    //* Task Card
+    const taskCardSection = document.querySelector(".taskCardSection")
+
+    const addTaskCard = (name,parent,date,priority,status) => {
+        const taskCardDiv = document.createElement("div")
+        taskCardDiv.className = "taskCard"
+    
+        const taskCardUpper = document.createElement("div")
+        taskCardUpper.className = "taskCardUpper"
+
+        const taskName = document.createElement("p")
+        taskName.className = "taskName"
+        taskName.innerText = name
+
+        const taskParent = document.createElement("p")
+        taskParent.className = "taskParent"
+        taskParent.innerText = parent
+
+        const taskDate = document.createElement("p")
+        taskDate.className = "taskDate"
+        taskDate.innerText = date
+
+        const taskPriority = document.createElement("p")
+        taskPriority.className = "taskPriority"
+        taskPriority.innerText = priority
+
+        const taskStatus = document.createElement("p")
+        taskStatus.className = "taskStatus"
+        taskStatus.innerText = status
+
+        const taskCardLower = document.createElement("div")
+        taskCardLower.className = "taskCardLower"
+
+        const taskEditBtn = document.createElement("button")
+        taskEditBtn.className = "taskEdit"
+        taskEditBtn.innerText = "Edit"
+
+        const taskDeleteBtn = document.createElement("button")
+        taskDeleteBtn.className = "taskDelete"
+        taskDeleteBtn.innerText = "Delete"
+
+        taskCardUpper.append(taskName,taskParent,taskDate,taskPriority,taskStatus)
+        taskCardLower.append(taskEditBtn,taskDeleteBtn)
+        taskCardDiv.append(taskCardUpper,taskCardLower)
+        taskCardSection.append(taskCardDiv)
+
+    }
+
+    return {addProjectForm, addProjectFormRemove, taskCreationForm, taskCreationFormRemove, deleteConfirmBox, deleteConfirmBoxRemove, addProjectToDOM, addTaskCard}
 })()
 
-export default handleUI
+export default UIhandler
