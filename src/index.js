@@ -52,5 +52,40 @@ addProjectBtn.addEventListener("click",()=>{
     }
 })
 
+
+const addTaskBtn = document.querySelector(".addTask")
+addTaskBtn.addEventListener("click",()=>{
+    const taskCreationForm = document.querySelector(".taskCreationForm")
+    if (!document.contains(taskCreationForm)) {
+        UIhandler.taskCreationForm()
+    }
+    document.querySelector(".cancelSVG").addEventListener("click", (e)=>{
+        e.currentTarget.parentElement.parentElement.remove()
+    })
+    document.querySelector(".inputSubmitTask").addEventListener("click",(e)=>{
+        e.preventDefault()
+        const parentProject = document.querySelector(".projectNameLabel").innerText
+        const taskInputName = document.querySelector("#name")
+        const taskInputDate = document.querySelector("#date")
+        const taskInputPriority = document.querySelector("#priority").value
+        const taskInputStatus = document.querySelector("input[name='status']:checked").value
+        //! Change date validation to include DateFNS
+        if (taskInputName.value == "" || taskInputDate.value == "") {
+            taskInputName.style.borderColor = "red"
+            taskInputDate.style.borderColor = "red"
+        }
+        else {
+            UIhandler.addTaskCard(taskInputName.value,parentProject,taskInputDate.value,taskInputPriority,taskInputStatus)
+            e.currentTarget.parentElement.remove()
+        }
+    })
+})
+
 Librarian.addProject("Default Project")
 tabLoader.loadProject("Default Project")
+
+//todo Add function to add tasks to project
+//todo Add function to delete project and return to default project
+//todo Add functionality to the rest of the buttons
+//todo Change date validation to use DateFNS
+//todo Apply new style after finishing functionality

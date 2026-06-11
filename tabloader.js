@@ -10,9 +10,6 @@ const tabLoader = (() => {
         projectLabel.append(projectNameLabel)
     }
 
-    //todo Add function to load project tasks 
-    //todo Add function to add tasks to project
-    //todo Add function to delete project and return to default project
     return {loadProject}
 })()
 
