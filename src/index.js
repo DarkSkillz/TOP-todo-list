@@ -54,14 +54,17 @@ addProjectBtn.addEventListener("click",()=>{
 
 
 const addTaskBtn = document.querySelector(".addTask")
+// Make task creation form appear
 addTaskBtn.addEventListener("click",()=>{
     const taskCreationForm = document.querySelector(".taskCreationForm")
     if (!document.contains(taskCreationForm)) {
         UIhandler.taskCreationForm()
     }
+    // Cancels task creation
     document.querySelector(".cancelSVG").addEventListener("click", (e)=>{
         e.currentTarget.parentElement.parentElement.remove()
     })
+    // Adds task to DOM
     document.querySelector(".inputSubmitTask").addEventListener("click",(e)=>{
         e.preventDefault()
         const parentProject = document.querySelector(".projectNameLabel").innerText
@@ -77,6 +80,13 @@ addTaskBtn.addEventListener("click",()=>{
         else {
             UIhandler.addTaskCard(taskInputName.value,parentProject,taskInputDate.value,taskInputPriority,taskInputStatus)
             e.currentTarget.parentElement.remove()
+            const AllProjects = Librarian.getAllProjects()
+            AllProjects.forEach(element => {
+            if (element.name == parentProject) {
+                element.addTask(new Task(taskInputName.value,parentProject,taskInputDate.value,taskInputPriority,taskInputStatus))
+                console.log(element);
+            }
+});
         }
     })
 })
@@ -88,4 +98,5 @@ tabLoader.loadProject("Default Project")
 //todo Add function to delete project and return to default project
 //todo Add functionality to the rest of the buttons
 //todo Change date validation to use DateFNS
+//todo Add project name check for existing names
 //todo Apply new style after finishing functionality

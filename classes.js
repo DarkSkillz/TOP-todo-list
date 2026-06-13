@@ -14,12 +14,12 @@ export class Project {
 }
 
 export class Task {
-    constructor(name, date, priority, status, parent) {
+    constructor(name, parent, date, priority, status) {
         this.name = name
+        this.parent = parent
         this.date = date
         this.priority = priority
         this.status = status
-        this.parent = parent
     }
 }
 
