@@ -3,21 +3,6 @@ import { Project, Task, Librarian } from "../classes.js";
 import UIhandler from "../UIHandler.js";
 import tabLoader from "../tabLoader.js"
 
-/* const project0 = new Project("Project0")
-const project1 = new Project("Project1")
-const project2 = new Project("Project2")
-
-Librarian.addProject(project0)
-Librarian.addProject(project1)
-Librarian.addProject(project2)
-const projects = Librarian.getAllProjects()
-
-projects[0].addTask(new Task("Task0","28th May 2026", "High","Not Completed", projects[0]._name))
-projects[1].addTask(new Task("Task1","29th May 2026", "Medium","Completed", projects[1]._name))
-projects[2].addTask(new Task("Task2","30th May 2026", "Low","Not Completed", projects[2]._name))
-
-Librarian.deleteProject(project1) */
-
 const aside = document.querySelector("aside")
 const addProjectBtn = document.querySelector(".addProjectBtn")
 
@@ -84,9 +69,33 @@ addTaskBtn.addEventListener("click",()=>{
             AllProjects.forEach(element => {
             if (element.name == parentProject) {
                 element.addTask(new Task(taskInputName.value,parentProject,taskInputDate.value,taskInputPriority,taskInputStatus))
-                console.log(element);
+                console.log(element); //! Debug only
             }
-});
+            });
+            // Edit task
+            document.querySelector(".taskEdit").addEventListener("click",(e) => {
+                const parentForm = e.currentTarget.parentElement.parentElement
+                AllProjects.forEach((i)=>{
+                    if (i.name == parentProject) {
+                        const targetProject = AllProjects.indexOf(i)
+                    }
+                })
+                UIhandler.taskEditForm(taskInputName.value,taskInputDate.value)
+                // Cancel Edit
+                document.querySelector(".cancelSVG").addEventListener("click", (e)=>{
+                    e.currentTarget.parentElement.parentElement.remove()
+                })
+                document.querySelector(".inputEditTask").addEventListener("click",(e)=>{
+                    e.preventDefault()
+                    parentForm.remove()
+
+                    //todo Figure out how to make the edit work
+                })
+            })
+            // Delete task
+            document.querySelector(".taskDelete").addEventListener("click", ()=>{
+                console.log("very gogo")
+            })
         }
     })
 })
