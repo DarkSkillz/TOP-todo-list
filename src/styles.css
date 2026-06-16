@@ -30,3 +30,7 @@ main {
 .cancelSVG {
     width: 30px;
 }
+
+.projectItem {
+    margin-left: 20px;
+}

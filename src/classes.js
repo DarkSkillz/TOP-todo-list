@@ -25,17 +25,26 @@ export class Task {
 
 export class Librarian {
     static projectArray = []
+    static projectNames = []
 
-    static getAllProjects() {
+    static getProjects() {
         return Librarian.projectArray
     }
 
+    static getProjectNames() {
+        return Librarian.projectNames
+    }
+    
     static addProject(projectName) {
         const newProject = new Project(projectName)
         Librarian.projectArray.push(newProject)
+        if (!Librarian.projectNames.includes(newProject.name)) {
+            Librarian.projectNames.push(newProject.name)
+        }
     }
 
     static deleteProject(project) {
         Librarian.projectArray.splice(Librarian.projectArray.indexOf(project), 1)
+        Librarian.projectNames.splice(Librarian.projectNames.indexOf(project), 1)
     }
 }

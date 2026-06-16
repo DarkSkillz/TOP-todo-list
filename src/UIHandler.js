@@ -1,8 +1,13 @@
+import { Librarian } from "./classes.js"
+
 const UIhandler = (() => {
     // Globals
     const aside = document.querySelector("aside")
     const main = document.querySelector("main")
     const taskCardSection = document.querySelector(".taskCardSection")
+    const projectList = document.querySelector(".projectList")
+    const projectArray = Librarian.getProjects()
+    const projectNames = Librarian.getProjectNames()
 
     //* Project Form
     const addProjectForm = () => {
@@ -11,11 +16,14 @@ const UIhandler = (() => {
         const inputText = document.createElement("input")
         const inputSubmitProject = document.createElement("input")
         const addProjectFormErr = document.createElement("p")
+        const nameErrMsg = document.createElement("span")
         
         // Classes & IDs
         formProject.className = "addProjectForm"
         inputText.className = "addFormProjectInputText"
         inputSubmitProject.className = "inputSubmitProject"
+        inputText.id = "projectInputText"
+        nameErrMsg.className = "nameErrMsg"
 
         // Attributes
         inputText.setAttribute("type","text")
@@ -25,6 +33,7 @@ const UIhandler = (() => {
         
         // Other
         addProjectFormErr.innerText = "Please enter a name!"
+        nameErrMsg.innerText = "A project of this name already exists"
 
         // Appending
         formProject.append(inputText,inputSubmitProject)
@@ -33,11 +42,32 @@ const UIhandler = (() => {
         // Event Listeners
         inputSubmitProject.addEventListener("click",(e)=>{
             e.preventDefault()
-            //todo Add project to librarian and DOM
-            removeParentElement(e.currentTarget)
+            if (projectNames.includes(inputText.value.trim())) {
+                formProject.append(nameErrMsg)
+            }
+            else if (inputText.value.trim() == "") {
+                inputText.style.borderColor = "red"
+            }
+            else {
+                Librarian.addProject(inputText.value)
+                projectList.replaceChildren()
+                projectsToDOM()
+                removeParentElement(e.currentTarget)
+                console.log(projectNames)
+            }
         })
     }
     
+    //* Parse Projects to DOM 
+    const projectsToDOM = () => {
+        projectArray.forEach((project)=>{
+            const projectDisplay = document.createElement("li")
+            projectDisplay.className = "projectItem"
+            projectDisplay.innerText = project.name
+            projectList.append(projectDisplay)
+        })
+    }
+
     //* Remove Parent Element
     const removeParentElement = (element) => {
         element.parentElement.remove()
