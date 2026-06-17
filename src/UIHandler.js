@@ -6,8 +6,12 @@ const UIhandler = (() => {
     const main = document.querySelector("main")
     const taskCardSection = document.querySelector(".taskCardSection")
     const projectList = document.querySelector(".projectList")
+    const currentProjectDisplay = document.querySelector(".currentProject")
     const projectArray = Librarian.getProjects()
     const projectNames = Librarian.getProjectNames()
+    const projectCollection = document.getElementsByClassName("projectItem")
+    const projectItems = Array.from(projectCollection)
+    let currentProject = "Default Project"
 
     //* Project Form
     const addProjectForm = () => {
@@ -53,11 +57,10 @@ const UIhandler = (() => {
                 projectList.replaceChildren()
                 projectsToDOM()
                 removeParentElement(e.currentTarget)
-                console.log(projectNames)
             }
         })
     }
-    
+
     //* Parse Projects to DOM 
     const projectsToDOM = () => {
         projectArray.forEach((project)=>{
@@ -65,7 +68,17 @@ const UIhandler = (() => {
             projectDisplay.className = "projectItem"
             projectDisplay.innerText = project.name
             projectList.append(projectDisplay)
+
+            projectDisplay.addEventListener("click",()=>{
+                currentProject = project.name
+                currentProjectDisplay.innerText = currentProject
+            })
         })
+    }
+
+    //* Parse Tasks to DOM
+    const tasksToDOM = () => {
+
     }
 
     //* Remove Parent Element
@@ -77,7 +90,7 @@ const UIhandler = (() => {
     const removeGrandParentElement = (element) => {
         element.parentElement.parentElement.remove()
     }
-    
+
     //* Task Creation Form
     const taskCreationForm = () => {
         // Creating Elements
@@ -121,9 +134,8 @@ const UIhandler = (() => {
         inputName.setAttribute("required","")
         labelName.setAttribute("for","name")
         labelDate.setAttribute("for","date")
-        inputDate.setAttribute("type","text")
+        inputDate.setAttribute("type","date")
         inputDate.setAttribute("name","date")
-        inputDate.setAttribute("required","")
         labelPriority.setAttribute("for","priority")
         selectElement.setAttribute("name","priority")
         optionHigh.setAttribute("value","High")
@@ -160,6 +172,28 @@ const UIhandler = (() => {
         taskStatusInputDiv.append(labelStatusComp, inputStatusComp, labelStatusNotComp, inputStatusNotComp)
         formTask.append(cancelSVG, taskNameInputDiv, taskDateInputDiv, taskPriorityInputDiv, taskStatusInputDiv, inputSubmitTask)
         main.append(formTask)
+
+        // Event Listeners
+        cancelSVG.addEventListener("click",(e)=>{
+            removeParentElement(e.currentTarget)
+        })
+
+        inputSubmitTask.addEventListener("click",(e)=>{
+            e.preventDefault()
+            const formData = new FormData(formTask)
+            const data = Object.fromEntries(formData)
+            if (data.name == "") {
+                inputName.style.borderColor = "red"
+            }
+            else if (data.date == "") {
+                inputDate.style.borderColor = "red"
+            } else {
+                //todo add task to current project
+                taskCardSection.replaceChildren()
+                tasksToDOM()
+                removeParentElement(e.currentTarget)
+            }
+        })
     }
 
     //* Task Edit Form
@@ -216,13 +250,11 @@ const UIhandler = (() => {
     labelName.setAttribute("for", "name")
     inputName.setAttribute("type", "text")
     inputName.setAttribute("name", "name")
-    inputName.setAttribute("required", "")
     inputName.setAttribute("value", name)
 
     labelDate.setAttribute("for", "date")
-    inputDate.setAttribute("type", "text")
+    inputDate.setAttribute("type", "date")
     inputDate.setAttribute("name", "date")
-    inputDate.setAttribute("required", "")
     inputDate.setAttribute("value", date)
 
     labelPriority.setAttribute("for", "priority")
@@ -280,18 +312,6 @@ const UIhandler = (() => {
     deleteConfirmBoxDiv.append(confirmText, deleteConfirmOptionsDiv)
     main.append(deleteConfirmBoxDiv)
 }
-/*     //* Adding projects to DOM
-    const unorderedList = document.querySelector(".projectList")
-
-    const addProjectToDOM = (projectArray) => {
-        unorderedList.replaceChildren()
-        for (let i = 0; i < projectArray.length; i++) {
-            const listItem = document.createElement("li")
-            listItem.innerText = projectArray[i].name
-            listItem.className = "projectItem"
-            unorderedList.append(listItem)
-        }
-    } */
 
     //* Task Card
     const addTaskCard = (name, parent, date, priority, status) => {
@@ -335,7 +355,7 @@ const UIhandler = (() => {
         taskCardSection.append(taskCardDiv)
     }
 
-    return {addProjectForm, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard}
+    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard}
 })()
 
 export default UIhandler

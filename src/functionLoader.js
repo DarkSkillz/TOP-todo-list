@@ -1,5 +1,5 @@
 const functionLoader = (() => {
-    //? Standby, idk what to do with you atm
+    //todo function(currentProject,currentTab) {clear main, add task cards}
     return {}
 })()
 

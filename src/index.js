@@ -6,17 +6,23 @@ import functionLoader from "./functionLoader.js"
 // Globals
 const aside = document.querySelector("aside")
 const addProjectBtn = document.querySelector(".addProjectBtn")
+const addTaskBtn = document.querySelector(".addTask")
+const deleteProjectBtn = document.querySelector(".deleteProject")
 const projectArray = Librarian.getProjects()
-let currentProject
 
 // Main Codespace
 Librarian.addProject("Default Project")
-
-const newTask = new Task("test task","empty","someday","high","comp")
+UIhandler.projectsToDOM()
 
 // Event Listeners
 addProjectBtn.addEventListener("click",()=>{
-    if (!aside.contains(aside.querySelector(".addProjectForm"))) {
+    if (!document.contains(document.querySelector(".addProjectForm"))) {
         UIhandler.addProjectForm()
+    }
+})
+
+addTaskBtn.addEventListener("click",()=>{
+    if (!document.contains(document.querySelector(".taskCreationForm"))) {
+        UIhandler.taskCreationForm()
     }
 })
