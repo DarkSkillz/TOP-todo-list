@@ -26,3 +26,13 @@ addTaskBtn.addEventListener("click",()=>{
         UIhandler.taskCreationForm()
     }
 })
+
+deleteProjectBtn.addEventListener("click",()=>{
+    if (!document.contains(document.querySelector(".deleteConfirmBox"))) {
+        UIhandler.deleteConfirmBox("project")
+    }
+})
+
+//todo Edit And Delete Tasks
+//todo Tab Switching Filters
+//todo Styling

@@ -6,7 +6,7 @@ const UIhandler = (() => {
     const main = document.querySelector("main")
     const taskCardSection = document.querySelector(".taskCardSection")
     const projectList = document.querySelector(".projectList")
-    const currentProjectDisplay = document.querySelector(".currentProject")
+    const projectLabel = document.querySelector(".projectLabel")
     const projectArray = Librarian.getProjects()
     const projectNames = Librarian.getProjectNames()
     const projectCollection = document.getElementsByClassName("projectItem")
@@ -80,8 +80,13 @@ const UIhandler = (() => {
             projectList.append(projectDisplay)
 
             projectDisplay.addEventListener("click",()=>{
+                projectLabel.replaceChildren()
+                const currentProjectDisplay = document.createElement("p")
+                currentProjectDisplay.className = "currentProject"
+                projectLabel.append(currentProjectDisplay)
                 currentProjectName = project.name
                 currentProjectDisplay.innerText = currentProjectName
+                updateCurrentProject()
                 tasksToDOM()
             })
         })
@@ -94,6 +99,13 @@ const UIhandler = (() => {
         currentProject.tasks.forEach((task)=>{
             addTaskCard(task.name, currentProjectName, task.date, task.priority, task.status)
         })
+    }
+
+    //* Reset Current Project
+    const resetCurrentProject = () => {
+        currentProjectName = "Default Project"
+        updateCurrentProject()
+        document.querySelector(".currentProject").innerText = currentProjectName
     }
 
     //* Remove Parent Element
@@ -303,7 +315,7 @@ const UIhandler = (() => {
 }
 
     //* Confirmation Box (Delete)
-    const deleteConfirmBox = () => {
+    const deleteConfirmBox = (type) => {
     // Elements
     const deleteConfirmBoxDiv = document.createElement("div")
     const confirmText = document.createElement("p")
@@ -326,6 +338,34 @@ const UIhandler = (() => {
     deleteConfirmOptionsDiv.append(deleteConfirmYesBtn, deleteConfirmNoBtn)
     deleteConfirmBoxDiv.append(confirmText, deleteConfirmOptionsDiv)
     main.append(deleteConfirmBoxDiv)
+
+    // Event Listeners
+    switch (type) {
+        case "project":
+            if (currentProjectName == "Default Project") {
+                confirmText.innerText = "You Can't Delete The Default Project!"
+                deleteConfirmOptionsDiv.removeChild(deleteConfirmYesBtn)
+                deleteConfirmNoBtn.innerText = "Go Back"
+            }
+            else {
+                deleteConfirmYesBtn.addEventListener("click",(e)=>{
+                    Librarian.deleteProject(currentProject)
+                    resetCurrentProject()
+                    projectsToDOM()
+                    tasksToDOM()
+                    removeGrandParentElement(e.currentTarget)
+                })
+            }
+            break;
+
+        case "task":
+            //todo Task Deletion
+            break
+    }
+    
+    deleteConfirmNoBtn.addEventListener("click",(e)=>{
+            removeGrandParentElement(e.currentTarget)
+        })
 }
 
     //* Task Card
