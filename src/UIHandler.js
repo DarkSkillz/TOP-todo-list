@@ -1,4 +1,4 @@
-import { Librarian } from "./classes.js"
+import { Project, Task, Librarian } from "./classes.js"
 
 const UIhandler = (() => {
     // Globals
@@ -11,7 +11,8 @@ const UIhandler = (() => {
     const projectNames = Librarian.getProjectNames()
     const projectCollection = document.getElementsByClassName("projectItem")
     const projectItems = Array.from(projectCollection)
-    let currentProject = "Default Project"
+    let currentProjectName = "Default Project"
+    let currentProject = projectArray[0]
 
     //* Project Form
     const addProjectForm = () => {
@@ -54,15 +55,24 @@ const UIhandler = (() => {
             }
             else {
                 Librarian.addProject(inputText.value)
-                projectList.replaceChildren()
                 projectsToDOM()
                 removeParentElement(e.currentTarget)
             }
         })
     }
 
+    //* Update Current Project
+    const updateCurrentProject = () => {
+        projectArray.forEach((project)=>{
+            if (project.name == currentProjectName) {
+                currentProject = projectArray[projectArray.indexOf(project)]
+            }
+        })
+    }
+
     //* Parse Projects to DOM 
     const projectsToDOM = () => {
+        projectList.replaceChildren()
         projectArray.forEach((project)=>{
             const projectDisplay = document.createElement("li")
             projectDisplay.className = "projectItem"
@@ -70,15 +80,20 @@ const UIhandler = (() => {
             projectList.append(projectDisplay)
 
             projectDisplay.addEventListener("click",()=>{
-                currentProject = project.name
-                currentProjectDisplay.innerText = currentProject
+                currentProjectName = project.name
+                currentProjectDisplay.innerText = currentProjectName
+                tasksToDOM()
             })
         })
     }
 
     //* Parse Tasks to DOM
     const tasksToDOM = () => {
-
+        taskCardSection.replaceChildren()
+        updateCurrentProject()
+        currentProject.tasks.forEach((task)=>{
+            addTaskCard(task.name, currentProjectName, task.date, task.priority, task.status)
+        })
     }
 
     //* Remove Parent Element
@@ -188,8 +203,8 @@ const UIhandler = (() => {
             else if (data.date == "") {
                 inputDate.style.borderColor = "red"
             } else {
-                //todo add task to current project
-                taskCardSection.replaceChildren()
+                updateCurrentProject()
+                currentProject.addTask(new Task(data.name, currentProjectName,data.date, data.priority, data.status))
                 tasksToDOM()
                 removeParentElement(e.currentTarget)
             }
