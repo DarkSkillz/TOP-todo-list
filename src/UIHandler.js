@@ -34,6 +34,7 @@ const UIhandler = (() => {
         // Attributes
         inputText.setAttribute("type","text")
         inputText.setAttribute("placeholder","Project name")
+        inputText.setAttribute("name","name")
         inputSubmitProject.setAttribute("type","submit")
         inputSubmitProject.setAttribute("value","Confirm")
         
@@ -48,14 +49,17 @@ const UIhandler = (() => {
         // Event Listeners
         inputSubmitProject.addEventListener("click",(e)=>{
             e.preventDefault()
-            if (projectNames.includes(inputText.value.trim())) {
+            const formData = new FormData(formProject)
+            const data = Object.fromEntries(formData)
+            if (projectNames.includes(data.name.trim().replace(/\s+/g, " "))) {
                 formProject.append(nameErrMsg)
             }
-            else if (inputText.value.trim() == "") {
+            else if (data.name.trim() == "") {
                 inputText.style.borderColor = "red"
             }
             else {
-                Librarian.addProject(inputText.value)
+                const projectName = data.name.trim().replace(/\s+/g, " ")
+                Librarian.addProject(projectName)
                 projectsToDOM()
                 removeParentElement(e.currentTarget)
             }
@@ -151,6 +155,7 @@ const UIhandler = (() => {
         const labelStatusNotComp = document.createElement("label")
         const inputStatusNotComp = document.createElement("input")
         const inputSubmitTask = document.createElement("input")
+        const nameErrMsg = document.createElement("span")
         
         // Classes & IDs
         formTask.className = "taskCreationForm"
@@ -159,6 +164,7 @@ const UIhandler = (() => {
         taskPriorityInputDiv.className = "taskPriorityInputDiv"
         taskStatusInputDiv.className = "taskStatusInputDiv"
         inputSubmitTask.className = "inputSubmitTask"
+        nameErrMsg.className = "nameErrMsg"
         inputName.id = "name"
         inputDate.id = "date"
         selectElement.id = "priority"
@@ -191,7 +197,7 @@ const UIhandler = (() => {
         inputSubmitTask.setAttribute("value","Add Task")
 
         // Other
-        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close-thick</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
+        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Cancel</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
         labelName.innerText = "Name"
         labelDate.innerText = "Date"
         labelPriority.innerText = "Priority"
@@ -200,6 +206,7 @@ const UIhandler = (() => {
         optionLow.innerText = "Low"
         labelStatusComp.innerText = "Completed"
         labelStatusNotComp.innerText = "Not Completed"
+        nameErrMsg.innerText = "A task of this name already exists within this project!"
 
         // Appending
         taskNameInputDiv.append(labelName,inputName)
@@ -217,16 +224,21 @@ const UIhandler = (() => {
 
         inputSubmitTask.addEventListener("click",(e)=>{
             e.preventDefault()
+            updateCurrentProject()
             const formData = new FormData(formTask)
             const data = Object.fromEntries(formData)
-            if (data.name == "") {
+            if (data.name.trim() == "") {
                 inputName.style.borderColor = "red"
             }
             else if (data.date == "") {
                 inputDate.style.borderColor = "red"
-            } else {
-                updateCurrentProject()
-                currentProject.addTask(new Task(data.name, currentProjectName,data.date, data.priority, data.status))
+            } 
+            else if (currentProject.taskNames.includes(data.name.trim().replace(/\s+/g, " "))) {
+                formTask.append(nameErrMsg)
+            }
+            else {
+                const taskName = data.name.trim().replace(/\s+/g, " ")
+                currentProject.addTask(new Task(taskName, currentProjectName,data.date, data.priority, data.status))
                 tasksToDOM()
                 removeParentElement(e.currentTarget)
             }
@@ -256,6 +268,7 @@ const UIhandler = (() => {
         const labelStatusNotComp = document.createElement("label")
         const inputStatusNotComp = document.createElement("input")
         const inputEditTask = document.createElement("input")
+        const nameErrMsg = document.createElement("span")
 
         // Classes & IDs
         formTask.className = "taskEditForm"
@@ -264,6 +277,7 @@ const UIhandler = (() => {
         taskPriorityInputDiv.className = "taskPriorityInputDiv"
         taskStatusInputDiv.className = "taskStatusInputDiv"
         inputEditTask.className = "inputEditTask"
+        nameErrMsg.className = "nameErrMsg"
 
         inputName.id = "name"
         inputDate.id = "date"
@@ -272,8 +286,7 @@ const UIhandler = (() => {
         inputStatusNotComp.id = "notCompleted"
 
         // Other
-        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close-thick</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
-
+        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Cancel</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
         labelName.innerText = "Name"
         labelDate.innerText = "Date"
         labelPriority.innerText = "Priority"
@@ -282,6 +295,7 @@ const UIhandler = (() => {
         optionLow.innerText = "Low"
         labelStatusComp.innerText = "Completed"
         labelStatusNotComp.innerText = "Not Completed"
+        nameErrMsg.innerText = "A task of this name already exists within this project!"
 
         // Attributes
         labelName.setAttribute("for", "name")
@@ -349,15 +363,21 @@ const UIhandler = (() => {
         // Event Listeners
         inputEditTask.addEventListener("click",(e)=>{
             e.preventDefault()
+            updateCurrentProject()
             const formData = new FormData(formTask)
             const data = Object.fromEntries(formData)
+            const taskName = data.name.trim().replace(/\s+/g, " ")
             if (data.name == "") {
                 inputName.style.borderColor = "red"
             }
             else if (data.date == "") {
                 inputDate.style.borderColor = "red"
-            } else {
-                currentTask.name = data.name
+            }
+            else if (currentProject.taskNames.includes(taskName) && currentTask.name !== taskName) {
+                formTask.append(nameErrMsg)
+            }
+            else {
+                currentTask.name = taskName
                 currentTask.date = data.date
                 currentTask.priority = data.priority
                 currentTask.status = data.status

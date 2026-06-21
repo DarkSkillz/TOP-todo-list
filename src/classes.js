@@ -2,14 +2,19 @@ export class Project {
     constructor(name) {
         this.name = name
         this.tasks = []
+        this.taskNames = []
     }
 
     addTask(task) {
         this.tasks.push(task)
+        if (!this.taskNames.includes(task.name)) {
+            this.taskNames.push(task.name)
+        }
     }
 
     deleteTask(task) {
         this.tasks.splice(this.tasks.indexOf(task), 1)
+        this.taskNames.splice(this.taskNames.indexOf(task), 1)
     }
 }
 

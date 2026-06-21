@@ -36,7 +36,6 @@ deleteProjectBtn.addEventListener("click",()=>{
     }
 })
 
-//todo Name Validation for tasks
-//todo Edit And Delete Tasks
+//todo Edit project name
 //todo Tab Switching Filters
 //todo Styling
