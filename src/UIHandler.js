@@ -71,6 +71,15 @@ const UIhandler = (() => {
         })
     }
 
+    //* Update Current Task
+    const updateCurrentTask = (taskName) => {
+        currentProject.tasks.forEach((task)=>{
+            if (task.name == taskName) {
+                currentTask = task
+            }
+        })
+    }
+
     //* Parse Projects to DOM 
     const projectsToDOM = () => {
         projectList.replaceChildren()
@@ -225,157 +234,200 @@ const UIhandler = (() => {
     }
 
     //* Task Edit Form
-    const taskEditForm = (name, date) => {
-    // Elements
-    const formTask = document.createElement("form")
-    const cancelSVG = document.createElement("span")
-    const taskNameInputDiv = document.createElement("div")
-    const labelName = document.createElement("label")
-    const inputName = document.createElement("input")
-    const taskDateInputDiv = document.createElement("div")
-    const labelDate = document.createElement("label")
-    const inputDate = document.createElement("input")
-    const taskPriorityInputDiv = document.createElement("div")
-    const labelPriority = document.createElement("label")
-    const selectElement = document.createElement("select")
-    const optionHigh = document.createElement("option")
-    const optionMed = document.createElement("option")
-    const optionLow = document.createElement("option")
-    const taskStatusInputDiv = document.createElement("div")
-    const labelStatusComp = document.createElement("label")
-    const inputStatusComp = document.createElement("input")
-    const labelStatusNotComp = document.createElement("label")
-    const inputStatusNotComp = document.createElement("input")
-    const inputEditTask = document.createElement("input")
+    const taskEditForm = (task) => {
+        // Elements
+        const formTask = document.createElement("form")
+        const cancelSVG = document.createElement("span")
+        const taskNameInputDiv = document.createElement("div")
+        const labelName = document.createElement("label")
+        const inputName = document.createElement("input")
+        const taskDateInputDiv = document.createElement("div")
+        const labelDate = document.createElement("label")
+        const inputDate = document.createElement("input")
+        const taskPriorityInputDiv = document.createElement("div")
+        const labelPriority = document.createElement("label")
+        const selectElement = document.createElement("select")
+        const optionHigh = document.createElement("option")
+        const optionMed = document.createElement("option")
+        const optionLow = document.createElement("option")
+        const taskStatusInputDiv = document.createElement("div")
+        const labelStatusComp = document.createElement("label")
+        const inputStatusComp = document.createElement("input")
+        const labelStatusNotComp = document.createElement("label")
+        const inputStatusNotComp = document.createElement("input")
+        const inputEditTask = document.createElement("input")
 
-    // Classes & IDs
-    formTask.className = "taskEditForm"
-    taskNameInputDiv.className = "taskNameInputDiv"
-    taskDateInputDiv.className = "taskDateInputDiv"
-    taskPriorityInputDiv.className = "taskPriorityInputDiv"
-    taskStatusInputDiv.className = "taskStatusInputDiv"
-    inputEditTask.className = "inputEditTask"
+        // Classes & IDs
+        formTask.className = "taskEditForm"
+        taskNameInputDiv.className = "taskNameInputDiv"
+        taskDateInputDiv.className = "taskDateInputDiv"
+        taskPriorityInputDiv.className = "taskPriorityInputDiv"
+        taskStatusInputDiv.className = "taskStatusInputDiv"
+        inputEditTask.className = "inputEditTask"
 
-    inputName.id = "name"
-    inputDate.id = "date"
-    selectElement.id = "priority"
-    inputStatusComp.id = "completed"
-    inputStatusNotComp.id = "notCompleted"
+        inputName.id = "name"
+        inputDate.id = "date"
+        selectElement.id = "priority"
+        inputStatusComp.id = "completed"
+        inputStatusNotComp.id = "notCompleted"
 
-    // Other
-    cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close-thick</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
+        // Other
+        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>close-thick</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
 
-    labelName.innerText = "Name"
-    labelDate.innerText = "Date"
-    labelPriority.innerText = "Priority"
-    optionHigh.innerText = "High"
-    optionMed.innerText = "Medium"
-    optionLow.innerText = "Low"
-    labelStatusComp.innerText = "Completed"
-    labelStatusNotComp.innerText = "Not Completed"
+        labelName.innerText = "Name"
+        labelDate.innerText = "Date"
+        labelPriority.innerText = "Priority"
+        optionHigh.innerText = "High"
+        optionMed.innerText = "Medium"
+        optionLow.innerText = "Low"
+        labelStatusComp.innerText = "Completed"
+        labelStatusNotComp.innerText = "Not Completed"
 
-    // Attributes
-    labelName.setAttribute("for", "name")
-    inputName.setAttribute("type", "text")
-    inputName.setAttribute("name", "name")
-    inputName.setAttribute("value", name)
+        // Attributes
+        labelName.setAttribute("for", "name")
+        inputName.setAttribute("type", "text")
+        inputName.setAttribute("name", "name")
+        inputName.setAttribute("value", task.name)
 
-    labelDate.setAttribute("for", "date")
-    inputDate.setAttribute("type", "date")
-    inputDate.setAttribute("name", "date")
-    inputDate.setAttribute("value", date)
+        labelDate.setAttribute("for", "date")
+        inputDate.setAttribute("type", "date")
+        inputDate.setAttribute("name", "date")
+        inputDate.setAttribute("value", task.date)
 
-    labelPriority.setAttribute("for", "priority")
-    selectElement.setAttribute("name", "priority")
-    optionHigh.setAttribute("value", "High")
-    optionMed.setAttribute("value", "Medium")
-    optionLow.setAttribute("value", "Low")
+        labelPriority.setAttribute("for", "priority")
+        selectElement.setAttribute("name", "priority")
+        optionHigh.setAttribute("value", "High")
+        optionMed.setAttribute("value", "Medium")
+        optionLow.setAttribute("value", "Low")
 
-    labelStatusComp.setAttribute("for", "completed")
-    inputStatusComp.setAttribute("type", "radio")
-    inputStatusComp.setAttribute("name", "status")
-    inputStatusComp.setAttribute("value", "Completed")
+        switch (task.priority) {
+            case "High":
+                optionHigh.setAttribute("selected","")
+                break;
+        
+            case "Medium":
+                optionMed.setAttribute("selected","")
+                break
 
-    labelStatusNotComp.setAttribute("for", "not completed")
-    inputStatusNotComp.setAttribute("type", "radio")
-    inputStatusNotComp.setAttribute("name", "status")
-    inputStatusNotComp.setAttribute("value", "Not Completed")
-    inputStatusNotComp.setAttribute("checked", "")
+            case "Low":
+                optionLow.setAttribute("selected","")
+                break
+        }
 
-    inputEditTask.setAttribute("type", "submit")
-    inputEditTask.setAttribute("value", "Edit Task")
+        labelStatusComp.setAttribute("for", "completed")
+        inputStatusComp.setAttribute("type", "radio")
+        inputStatusComp.setAttribute("name", "status")
+        inputStatusComp.setAttribute("value", "Completed")
 
-    // Appending
-    selectElement.append(optionHigh, optionMed, optionLow)
-    taskNameInputDiv.append(labelName, inputName)
-    taskDateInputDiv.append(labelDate, inputDate)
-    taskPriorityInputDiv.append(labelPriority, selectElement)
-    taskStatusInputDiv.append(labelStatusComp, inputStatusComp, labelStatusNotComp, inputStatusNotComp)
-    formTask.append(cancelSVG, taskNameInputDiv, taskDateInputDiv, taskPriorityInputDiv, taskStatusInputDiv, inputEditTask)
-    main.append(formTask)
+        labelStatusNotComp.setAttribute("for", "not completed")
+        inputStatusNotComp.setAttribute("type", "radio")
+        inputStatusNotComp.setAttribute("name", "status")
+        inputStatusNotComp.setAttribute("value", "Not Completed")
+
+        switch (task.status) {
+            case "Completed":
+                inputStatusComp.setAttribute("checked","")
+                break;
+
+            case "Not Completed":
+                inputStatusNotComp.setAttribute("checked","")
+                break
+        }
+
+        inputEditTask.setAttribute("type", "submit")
+        inputEditTask.setAttribute("value", "Edit Task")
+
+        // Appending
+        selectElement.append(optionHigh, optionMed, optionLow)
+        taskNameInputDiv.append(labelName, inputName)
+        taskDateInputDiv.append(labelDate, inputDate)
+        taskPriorityInputDiv.append(labelPriority, selectElement)
+        taskStatusInputDiv.append(labelStatusComp, inputStatusComp, labelStatusNotComp, inputStatusNotComp)
+        formTask.append(cancelSVG, taskNameInputDiv, taskDateInputDiv, taskPriorityInputDiv, taskStatusInputDiv, inputEditTask)
+        main.append(formTask)
+
+        // Event Listeners
+        inputEditTask.addEventListener("click",(e)=>{
+            e.preventDefault()
+            const formData = new FormData(formTask)
+            const data = Object.fromEntries(formData)
+            if (data.name == "") {
+                inputName.style.borderColor = "red"
+            }
+            else if (data.date == "") {
+                inputDate.style.borderColor = "red"
+            } else {
+                currentTask.name = data.name
+                currentTask.date = data.date
+                currentTask.priority = data.priority
+                currentTask.status = data.status
+                tasksToDOM()
+                removeParentElement(e.currentTarget)
+            }
+        })
+        
+        cancelSVG.addEventListener("click",(e)=>{
+            removeParentElement(e.currentTarget)
+        })
 }
 
     //* Confirmation Box (Delete)
     const deleteConfirmBox = (type, taskName) => {
-    // Elements
-    const deleteConfirmBoxDiv = document.createElement("div")
-    const confirmText = document.createElement("p")
-    const deleteConfirmOptionsDiv = document.createElement("div")
-    const deleteConfirmYesBtn = document.createElement("button")
-    const deleteConfirmNoBtn = document.createElement("button")
+        // Elements
+        const deleteConfirmBoxDiv = document.createElement("div")
+        const confirmText = document.createElement("p")
+        const deleteConfirmOptionsDiv = document.createElement("div")
+        const deleteConfirmYesBtn = document.createElement("button")
+        const deleteConfirmNoBtn = document.createElement("button")
 
-    // Classes & IDs
-    deleteConfirmBoxDiv.className = "deleteConfirmBox"
-    deleteConfirmOptionsDiv.className = "deleteConfirmOptions"
-    deleteConfirmYesBtn.className = "deleteConfirmYes"
-    deleteConfirmNoBtn.className = "deleteConfirmNo"
+        // Classes & IDs
+        deleteConfirmBoxDiv.className = "deleteConfirmBox"
+        deleteConfirmOptionsDiv.className = "deleteConfirmOptions"
+        deleteConfirmYesBtn.className = "deleteConfirmYes"
+        deleteConfirmNoBtn.className = "deleteConfirmNo"
 
-    // Other
-    confirmText.innerText = 'Are you sure you want to delete "project/task" ?'
-    deleteConfirmYesBtn.innerText = "Yes"
-    deleteConfirmNoBtn.innerText = "No"
+        // Other
+        confirmText.innerText = 'Are you sure you want to delete "project/task" ?'
+        deleteConfirmYesBtn.innerText = "Yes"
+        deleteConfirmNoBtn.innerText = "No"
 
-    // Appending
-    deleteConfirmOptionsDiv.append(deleteConfirmYesBtn, deleteConfirmNoBtn)
-    deleteConfirmBoxDiv.append(confirmText, deleteConfirmOptionsDiv)
-    main.append(deleteConfirmBoxDiv)
+        // Appending
+        deleteConfirmOptionsDiv.append(deleteConfirmYesBtn, deleteConfirmNoBtn)
+        deleteConfirmBoxDiv.append(confirmText, deleteConfirmOptionsDiv)
+        main.append(deleteConfirmBoxDiv)
 
-    // Event Listeners
-    switch (type) {
-        case "project":
-            if (currentProjectName == "Default Project") {
-                confirmText.innerText = "You Can't Delete The Default Project!"
-                deleteConfirmOptionsDiv.removeChild(deleteConfirmYesBtn)
-                deleteConfirmNoBtn.innerText = "Go Back"
-            }
-            else {
+        // Event Listeners
+        switch (type) {
+            case "project":
+                if (currentProjectName == "Default Project") {
+                    confirmText.innerText = "You Can't Delete The Default Project!"
+                    deleteConfirmOptionsDiv.removeChild(deleteConfirmYesBtn)
+                    deleteConfirmNoBtn.innerText = "Go Back"
+                }
+                else {
+                    deleteConfirmYesBtn.addEventListener("click",(e)=>{
+                        Librarian.deleteProject(currentProject)
+                        resetCurrentProject()
+                        projectsToDOM()
+                        tasksToDOM()
+                        removeGrandParentElement(e.currentTarget)
+                    })
+                }
+                break;
+
+            case "task":
                 deleteConfirmYesBtn.addEventListener("click",(e)=>{
-                    Librarian.deleteProject(currentProject)
-                    resetCurrentProject()
-                    projectsToDOM()
+                    updateCurrentTask(taskName)
+                    currentProject.deleteTask(currentTask)
                     tasksToDOM()
                     removeGrandParentElement(e.currentTarget)
                 })
-            }
-            break;
-
-        case "task":
-            deleteConfirmYesBtn.addEventListener("click",(e)=>{
-                currentProject.tasks.forEach((task)=>{
-                    if (task.name == taskName) {
-                        currentTask = task
-                    }
-                })
-                currentProject.deleteTask(currentTask)
-                tasksToDOM()
+                break
+        }
+        
+        deleteConfirmNoBtn.addEventListener("click",(e)=>{
                 removeGrandParentElement(e.currentTarget)
             })
-            break
-    }
-    
-    deleteConfirmNoBtn.addEventListener("click",(e)=>{
-            removeGrandParentElement(e.currentTarget)
-        })
 }
 
     //* Task Card
@@ -420,12 +472,17 @@ const UIhandler = (() => {
         taskCardSection.append(taskCardDiv)
 
         // Event Listeners
-        taskEditBtn.addEventListener("click",()=>{
-            //todo Task Edit
+        taskEditBtn.addEventListener("click",(e)=>{
+            if (!document.contains(document.querySelector(".taskEditForm"))) {
+                updateCurrentTask(e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText)
+                taskEditForm(currentTask)
+            }
         })
 
         taskDeleteBtn.addEventListener("click",(e)=>{
-            deleteConfirmBox("task",e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText)
+            if (!document.contains(document.querySelector(".deleteConfirmBox"))) {
+                deleteConfirmBox("task",e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText)
+            }
         })
     }
 
