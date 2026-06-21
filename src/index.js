@@ -12,6 +12,9 @@ const projectArray = Librarian.getProjects()
 
 // Main Codespace
 Librarian.addProject("Default Project")
+projectArray[0].addTask(new Task("one","Default Project","2026-06-11","High","Completed"))
+projectArray[0].addTask(new Task("two","Default Project","2026-06-11","High","Completed"))
+projectArray[0].addTask(new Task("three","Default Project","2026-06-11","High","Completed"))
 UIhandler.projectsToDOM()
 
 // Event Listeners
@@ -33,6 +36,7 @@ deleteProjectBtn.addEventListener("click",()=>{
     }
 })
 
+//todo Name Validation for tasks
 //todo Edit And Delete Tasks
 //todo Tab Switching Filters
 //todo Styling

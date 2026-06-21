@@ -13,6 +13,7 @@ const UIhandler = (() => {
     const projectItems = Array.from(projectCollection)
     let currentProjectName = "Default Project"
     let currentProject = projectArray[0]
+    let currentTask = undefined
 
     //* Project Form
     const addProjectForm = () => {
@@ -315,7 +316,7 @@ const UIhandler = (() => {
 }
 
     //* Confirmation Box (Delete)
-    const deleteConfirmBox = (type) => {
+    const deleteConfirmBox = (type, taskName) => {
     // Elements
     const deleteConfirmBoxDiv = document.createElement("div")
     const confirmText = document.createElement("p")
@@ -359,7 +360,16 @@ const UIhandler = (() => {
             break;
 
         case "task":
-            //todo Task Deletion
+            deleteConfirmYesBtn.addEventListener("click",(e)=>{
+                currentProject.tasks.forEach((task)=>{
+                    if (task.name == taskName) {
+                        currentTask = task
+                    }
+                })
+                currentProject.deleteTask(currentTask)
+                tasksToDOM()
+                removeGrandParentElement(e.currentTarget)
+            })
             break
     }
     
@@ -408,6 +418,15 @@ const UIhandler = (() => {
         taskCardLower.append(taskEditBtn, taskDeleteBtn)
         taskCardDiv.append(taskCardUpper, taskCardLower)
         taskCardSection.append(taskCardDiv)
+
+        // Event Listeners
+        taskEditBtn.addEventListener("click",()=>{
+            //todo Task Edit
+        })
+
+        taskDeleteBtn.addEventListener("click",(e)=>{
+            deleteConfirmBox("task",e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText)
+        })
     }
 
     return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard}
