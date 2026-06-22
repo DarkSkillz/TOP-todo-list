@@ -8,6 +8,7 @@ const aside = document.querySelector("aside")
 const addProjectBtn = document.querySelector(".addProjectBtn")
 const addTaskBtn = document.querySelector(".addTask")
 const deleteProjectBtn = document.querySelector(".deleteProject")
+const editNameBtn = document.querySelector(".editName")
 const projectArray = Librarian.getProjects()
 
 // Main Codespace
@@ -36,6 +37,11 @@ deleteProjectBtn.addEventListener("click",()=>{
     }
 })
 
-//todo Edit project name
+editNameBtn.addEventListener("click",()=>{
+    if (!document.contains(document.querySelector(".editProjectForm"))) {
+        UIhandler.editProjectName()
+    }
+})
+
 //todo Tab Switching Filters
 //todo Styling

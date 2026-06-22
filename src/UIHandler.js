@@ -7,6 +7,7 @@ const UIhandler = (() => {
     const taskCardSection = document.querySelector(".taskCardSection")
     const projectList = document.querySelector(".projectList")
     const projectLabel = document.querySelector(".projectLabel")
+    const projectConfig = document.querySelector(".projectConfig")
     const projectArray = Librarian.getProjects()
     const projectNames = Librarian.getProjectNames()
     const projectCollection = document.getElementsByClassName("projectItem")
@@ -21,7 +22,6 @@ const UIhandler = (() => {
         const formProject = document.createElement("form")
         const inputText = document.createElement("input")
         const inputSubmitProject = document.createElement("input")
-        const addProjectFormErr = document.createElement("p")
         const nameErrMsg = document.createElement("span")
         
         // Classes & IDs
@@ -39,7 +39,6 @@ const UIhandler = (() => {
         inputSubmitProject.setAttribute("value","Confirm")
         
         // Other
-        addProjectFormErr.innerText = "Please enter a name!"
         nameErrMsg.innerText = "A project of this name already exists"
 
         // Appending
@@ -450,6 +449,77 @@ const UIhandler = (() => {
             })
 }
 
+    //* Edit Project Name
+    const editProjectName = () => {
+        // Elements
+        const formProject = document.createElement("form")
+        const inputText = document.createElement("input")
+        const inputSubmitProject = document.createElement("input")
+        const nameErrMsg = document.createElement("span")
+        const projectErrMsg = document.createElement("span")
+        
+        // Classes & IDs
+        formProject.className = "editProjectForm"
+        inputText.className = "editFormProjectInputText"
+        inputSubmitProject.className = "inputSubmitProject"
+        inputText.id = "projectInputText"
+        nameErrMsg.className = "nameErrMsg"
+        projectErrMsg.className = "projectErrMsg"
+
+        // Attributes
+        inputText.setAttribute("type","text")
+        inputText.setAttribute("placeholder","Project name")
+        inputText.setAttribute("name","name")
+        inputSubmitProject.setAttribute("type","submit")
+        inputSubmitProject.setAttribute("value","Confirm")
+        
+        // Other
+        nameErrMsg.innerText = "A project of this name already exists"
+        projectErrMsg.innerText = "You Can't Change the name of the Default Project"
+
+        // Appending
+        formProject.append(inputText,inputSubmitProject)
+        projectLabel.append(formProject)
+        
+        // Event Listeners
+        if (currentProjectName !== "Default Project") {
+            inputSubmitProject.addEventListener("click",(e)=>{
+                e.preventDefault()
+                updateCurrentProject()
+                const formData = new FormData(formProject)
+                const data = Object.fromEntries(formData)
+                const projectName = data.name.trim().replace(/\s+/g, " ")
+                if (projectNames.includes(data.name.trim().replace(/\s+/g, " ")) && currentProjectName !== projectName) {
+                    formProject.append(nameErrMsg)
+                }
+                else if (data.name.trim() == "") {
+                    inputText.style.borderColor = "red"
+                }
+                else {
+                    currentProject.name = projectName
+                    projectsToDOM()
+                    projectLabel.replaceChildren()
+                    const currentProjectDisplay = document.createElement("p")
+                    currentProjectDisplay.className = "currentProject"
+                    projectLabel.append(currentProjectDisplay)
+                    currentProjectName = currentProject.name
+                    currentProjectDisplay.innerText = currentProjectName
+                    removeParentElement(e.currentTarget)
+                }
+            })
+        }
+        else {
+            formProject.removeChild(inputText)
+            formProject.append(projectErrMsg)
+            inputSubmitProject.setAttribute("value","Go Back")
+
+            inputSubmitProject.addEventListener("click",(e)=>{
+                e.preventDefault()
+                removeParentElement(e.currentTarget)
+            })
+        }
+    }
+
     //* Task Card
     const addTaskCard = (name, parent, date, priority, status) => {
         // Elements
@@ -506,7 +576,7 @@ const UIhandler = (() => {
         })
     }
 
-    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard}
+    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName}
 })()
 
 export default UIhandler
