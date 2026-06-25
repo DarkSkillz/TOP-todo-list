@@ -15,6 +15,17 @@ body {
 header {
     grid-area: header;
     border: 1px solid red;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.timeTab {
+    background-color: rgba(116, 14, 184, 0.432);
+    padding: 50px 130px;
+    border: 2px solid black;
+    border-top: 0;
+    border-bottom: 0;
+    text-wrap: nowrap;
 }
 
 aside {

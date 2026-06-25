@@ -10,12 +10,12 @@ const UIhandler = (() => {
     const projectConfig = document.querySelector(".projectConfig")
     const projectArray = Librarian.getProjects()
     const projectNames = Librarian.getProjectNames()
-    const projectCollection = document.getElementsByClassName("projectItem")
-    const projectItems = Array.from(projectCollection)
     let currentProjectName = "Default Project"
     let currentProject = projectArray[0]
     let currentTask = undefined
+    let currentTab = "All Time"
 
+    // Functions
     //* Project Form
     const addProjectForm = () => {
         // Elements
@@ -576,7 +576,39 @@ const UIhandler = (() => {
         })
     }
 
-    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName}
+    //* Today Loader
+    const loadToday = () => {
+        tasksToDOM()
+        const taskDates = Array.from(document.querySelectorAll(".taskDate"))
+        taskDates.forEach((date)=>{
+            if (date.innerText !== "2026-06-25") {
+                removeGrandParentElement(date)
+            }
+        })
+    }
+
+    //* This Week Loader
+        const loadThisWeek = () => {
+        console.log("week")
+    }
+
+    //* This Month Loader
+        const loadThisMonth = () => {
+        console.log("month")
+    }
+
+    //* This Year Loader
+    const loadThisYear = () => {
+        console.log("year")
+    }
+
+    //* All Time Loader
+    const loadAllTime = () => {
+        tasksToDOM()
+    }
+
+
+    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, loadToday, loadThisWeek, loadThisMonth, loadThisYear, loadAllTime}
 })()
 
 export default UIhandler
