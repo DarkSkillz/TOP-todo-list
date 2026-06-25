@@ -20,8 +20,10 @@ const allTimeTab = document.getElementById("allTimeTab")
 // Main Codespace
 Librarian.addProject("Default Project")
 projectArray[0].addTask(new Task("Test Task 1","Default Project","2026-06-25","High","Completed"))
-projectArray[0].addTask(new Task("Test Task 2","Default Project","2026-06-24","High","Completed"))
-projectArray[0].addTask(new Task("Test Task 3","Default Project","2026-06-26","High","Completed"))
+projectArray[0].addTask(new Task("Test Task 2","Default Project","2026-06-26","High","Completed"))
+projectArray[0].addTask(new Task("Test Task 3","Default Project","2026-06-05","High","Completed"))
+projectArray[0].addTask(new Task("Test Task 4","Default Project","2026-07-05","High","Completed"))
+projectArray[0].addTask(new Task("Test Task 5","Default Project","2027-07-05","High","Completed"))
 UIhandler.projectsToDOM()
 
 // Event Listeners
@@ -50,23 +52,21 @@ editNameBtn.addEventListener("click",()=>{
 })
 
 todayTab.addEventListener("click",()=>{
-    UIhandler.loadToday()
+    UIhandler.timeLoad("Today")
 })
 weekTab.addEventListener("click",()=>{
-    UIhandler.loadThisWeek()
+    UIhandler.timeLoad("Week")
 })
 monthTab.addEventListener("click",()=>{
-    UIhandler.loadThisMonth()
+    UIhandler.timeLoad("Month")
 })
 yearTab.addEventListener("click",()=>{
-    UIhandler.loadThisYear()
+    UIhandler.timeLoad("Year")
 })
 allTimeTab.addEventListener("click",()=>{
-    UIhandler.loadAllTime()
+    UIhandler.timeLoad("AllTime")
 })
 
-
 // TODOs
-//todo Tab Switching Filters
 //todo All Projects Option
 //todo Styling

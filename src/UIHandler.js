@@ -1,4 +1,5 @@
 import { Project, Task, Librarian } from "./classes.js"
+import { isToday, isThisWeek, isThisMonth, isThisYear } from "date-fns";
 
 const UIhandler = (() => {
     // Globals
@@ -13,7 +14,7 @@ const UIhandler = (() => {
     let currentProjectName = "Default Project"
     let currentProject = projectArray[0]
     let currentTask = undefined
-    let currentTab = "All Time"
+    let currentTab = "AllTime"
 
     // Functions
     //* Project Form
@@ -111,6 +112,36 @@ const UIhandler = (() => {
         updateCurrentProject()
         currentProject.tasks.forEach((task)=>{
             addTaskCard(task.name, currentProjectName, task.date, task.priority, task.status)
+        })
+
+        const taskDates = Array.from(document.querySelectorAll(".taskDate"))
+        taskDates.forEach((task)=>{
+            const date = new Date(task.innerText)
+            switch (currentTab) {
+                case "Today":
+                    if (!isToday(date)) {
+                        removeGrandParentElement(task)
+                    }
+                    break;
+
+                case "Week":
+                    if (!isThisWeek(date)) {
+                        removeGrandParentElement(task)
+                    }
+                    break;
+
+                case "Month":
+                    if (!isThisMonth(date)) {
+                        removeGrandParentElement(task)
+                    }
+                    break;
+                    
+                case "Year":
+                    if (!isThisYear(date)) {
+                        removeGrandParentElement(task)
+                    }
+                    break;
+            }
         })
     }
 
@@ -576,39 +607,13 @@ const UIhandler = (() => {
         })
     }
 
-    //* Today Loader
-    const loadToday = () => {
-        tasksToDOM()
-        const taskDates = Array.from(document.querySelectorAll(".taskDate"))
-        taskDates.forEach((date)=>{
-            if (date.innerText !== "2026-06-25") {
-                removeGrandParentElement(date)
-            }
-        })
-    }
-
-    //* This Week Loader
-        const loadThisWeek = () => {
-        console.log("week")
-    }
-
-    //* This Month Loader
-        const loadThisMonth = () => {
-        console.log("month")
-    }
-
-    //* This Year Loader
-    const loadThisYear = () => {
-        console.log("year")
-    }
-
-    //* All Time Loader
-    const loadAllTime = () => {
+    //* Time Load
+    const timeLoad = (time) => {
+        currentTab = time
         tasksToDOM()
     }
 
-
-    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, loadToday, loadThisWeek, loadThisMonth, loadThisYear, loadAllTime}
+    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, timeLoad}
 })()
 
 export default UIhandler
