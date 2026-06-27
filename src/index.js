@@ -10,6 +10,8 @@ const addProjectBtn = document.querySelector(".addProjectBtn")
 const addTaskBtn = document.querySelector(".addTask")
 const deleteProjectBtn = document.querySelector(".deleteProject")
 const editNameBtn = document.querySelector(".editName")
+const allProjects = document.querySelector(".allProjects")
+const currentProject = document.querySelector(".currentProject")
 const projectArray = Librarian.getProjects()
 const todayTab = document.getElementById("todayTab")
 const weekTab = document.getElementById("weekTab")
@@ -18,12 +20,11 @@ const yearTab = document.getElementById("yearTab")
 const allTimeTab = document.getElementById("allTimeTab")
 
 // Main Codespace
-Librarian.addProject("Default Project")
-projectArray[0].addTask(new Task("Test Task 1","Default Project","2026-06-25","High","Completed"))
-projectArray[0].addTask(new Task("Test Task 2","Default Project","2026-06-26","High","Completed"))
-projectArray[0].addTask(new Task("Test Task 3","Default Project","2026-06-05","High","Completed"))
-projectArray[0].addTask(new Task("Test Task 4","Default Project","2026-07-05","High","Completed"))
-projectArray[0].addTask(new Task("Test Task 5","Default Project","2027-07-05","High","Completed"))
+Librarian.addProject("All Projects")
+/* Librarian.addProject("testProject")
+projectArray[1].addTask(new Task("1","pro2","2026-06-25","High","Completed"))
+projectArray[1].addTask(new Task("2","pro2","2026-06-25","High","Completed"))
+projectArray[1].addTask(new Task("3","pro2","2026-06-25","High","Completed")) */
 UIhandler.projectsToDOM()
 
 // Event Listeners
@@ -54,19 +55,25 @@ editNameBtn.addEventListener("click",()=>{
 todayTab.addEventListener("click",()=>{
     UIhandler.timeLoad("Today")
 })
+
 weekTab.addEventListener("click",()=>{
     UIhandler.timeLoad("Week")
 })
+
 monthTab.addEventListener("click",()=>{
     UIhandler.timeLoad("Month")
 })
+
 yearTab.addEventListener("click",()=>{
     UIhandler.timeLoad("Year")
 })
+
 allTimeTab.addEventListener("click",()=>{
     UIhandler.timeLoad("AllTime")
 })
 
+
 // TODOs
 //todo All Projects Option
+//todo Local Storage
 //todo Styling

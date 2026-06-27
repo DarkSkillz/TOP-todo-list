@@ -1,5 +1,5 @@
 import { Project, Task, Librarian } from "./classes.js"
-import { isToday, isThisWeek, isThisMonth, isThisYear } from "date-fns";
+import { isToday, isThisWeek, isThisMonth, isThisYear, format } from "date-fns";
 
 const UIhandler = (() => {
     // Globals
@@ -11,7 +11,7 @@ const UIhandler = (() => {
     const projectConfig = document.querySelector(".projectConfig")
     const projectArray = Librarian.getProjects()
     const projectNames = Librarian.getProjectNames()
-    let currentProjectName = "Default Project"
+    let currentProjectName = "All Projects"
     let currentProject = projectArray[0]
     let currentTask = undefined
     let currentTab = "AllTime"
@@ -76,9 +76,9 @@ const UIhandler = (() => {
     }
 
     //* Update Current Task
-    const updateCurrentTask = (taskName) => {
+    const updateCurrentTask = (taskName, taskParent) => {
         currentProject.tasks.forEach((task)=>{
-            if (task.name == taskName) {
+            if (task.name == taskName && task.parent == taskParent) {
                 currentTask = task
             }
         })
@@ -111,7 +111,7 @@ const UIhandler = (() => {
         taskCardSection.replaceChildren()
         updateCurrentProject()
         currentProject.tasks.forEach((task)=>{
-            addTaskCard(task.name, currentProjectName, task.date, task.priority, task.status)
+            addTaskCard(task.name, task.parent, task.date, task.priority, task.status)
         })
 
         const taskDates = Array.from(document.querySelectorAll(".taskDate"))
@@ -147,7 +147,7 @@ const UIhandler = (() => {
 
     //* Reset Current Project
     const resetCurrentProject = () => {
-        currentProjectName = "Default Project"
+        currentProjectName = "All Projects"
         updateCurrentProject()
         document.querySelector(".currentProject").innerText = currentProjectName
     }
@@ -186,6 +186,7 @@ const UIhandler = (() => {
         const inputStatusNotComp = document.createElement("input")
         const inputSubmitTask = document.createElement("input")
         const nameErrMsg = document.createElement("span")
+        const taskErrMsg = document.createElement("span")
         
         // Classes & IDs
         formTask.className = "taskCreationForm"
@@ -237,6 +238,7 @@ const UIhandler = (() => {
         labelStatusComp.innerText = "Completed"
         labelStatusNotComp.innerText = "Not Completed"
         nameErrMsg.innerText = "A task of this name already exists within this project!"
+        taskErrMsg.innerText = "You Can't Add Tasks to This Project Directly!"
 
         // Appending
         taskNameInputDiv.append(labelName,inputName)
@@ -252,27 +254,42 @@ const UIhandler = (() => {
             removeParentElement(e.currentTarget)
         })
 
-        inputSubmitTask.addEventListener("click",(e)=>{
-            e.preventDefault()
-            updateCurrentProject()
-            const formData = new FormData(formTask)
-            const data = Object.fromEntries(formData)
-            if (data.name.trim() == "") {
-                inputName.style.borderColor = "red"
-            }
-            else if (data.date == "") {
-                inputDate.style.borderColor = "red"
-            } 
-            else if (currentProject.taskNames.includes(data.name.trim().replace(/\s+/g, " "))) {
-                formTask.append(nameErrMsg)
-            }
-            else {
-                const taskName = data.name.trim().replace(/\s+/g, " ")
-                currentProject.addTask(new Task(taskName, currentProjectName,data.date, data.priority, data.status))
-                tasksToDOM()
+        if (currentProjectName == "All Projects") {
+            formTask.replaceChildren()
+            formTask.append(inputSubmitTask)
+            inputSubmitTask.setAttribute("value","Go Back")
+            formTask.append(taskErrMsg)
+            inputSubmitTask.addEventListener("click",(e)=>{
+                e.preventDefault()
                 removeParentElement(e.currentTarget)
-            }
-        })
+            })
+            
+        }
+        else {
+            inputSubmitTask.addEventListener("click",(e)=>{
+                e.preventDefault()
+                updateCurrentProject()
+                const formData = new FormData(formTask)
+                const data = Object.fromEntries(formData)
+                if (data.name.trim() == "") {
+                    inputName.style.borderColor = "red"
+                }
+                else if (data.date == "") {
+                    inputDate.style.borderColor = "red"
+                } 
+                else if (currentProject.taskNames.includes(data.name.trim().replace(/\s+/g, " "))) {
+                    formTask.append(nameErrMsg)
+                }
+                else {
+                    const taskName = data.name.trim().replace(/\s+/g, " ")
+                    currentProject.addTask(new Task(taskName, currentProjectName,data.date, data.priority, data.status))
+                    updateCurrentTask(taskName, currentProjectName)
+                    projectArray[0].addTask(currentTask)
+                    tasksToDOM()
+                    removeParentElement(e.currentTarget)
+                }
+            })
+        }
     }
 
     //* Task Edit Form
@@ -422,7 +439,7 @@ const UIhandler = (() => {
 }
 
     //* Confirmation Box (Delete)
-    const deleteConfirmBox = (type, taskName) => {
+    const deleteConfirmBox = (type, taskName, taskParent) => {
         // Elements
         const deleteConfirmBoxDiv = document.createElement("div")
         const confirmText = document.createElement("p")
@@ -437,7 +454,7 @@ const UIhandler = (() => {
         deleteConfirmNoBtn.className = "deleteConfirmNo"
 
         // Other
-        confirmText.innerText = 'Are you sure you want to delete "project/task" ?'
+        confirmText.innerText = `Are you sure you want to delete this ${type} ?`
         deleteConfirmYesBtn.innerText = "Yes"
         deleteConfirmNoBtn.innerText = "No"
 
@@ -449,14 +466,22 @@ const UIhandler = (() => {
         // Event Listeners
         switch (type) {
             case "project":
-                if (currentProjectName == "Default Project") {
-                    confirmText.innerText = "You Can't Delete The Default Project!"
+                if (currentProjectName == "All Projects") {
+                    confirmText.innerText = "You Can't Delete This Project!"
                     deleteConfirmOptionsDiv.removeChild(deleteConfirmYesBtn)
                     deleteConfirmNoBtn.innerText = "Go Back"
                 }
                 else {
+                    updateCurrentProject()
                     deleteConfirmYesBtn.addEventListener("click",(e)=>{
                         Librarian.deleteProject(currentProject)
+                        projectArray[0].tasks.forEach((task)=>{
+                            if (!projectNames.includes(task.parent)) {
+                                console.log(projectNames)
+                                projectArray[0].deleteTask(task)
+                                //! WHY ISN'T THIS WORKING 
+                            }
+                        })
                         resetCurrentProject()
                         projectsToDOM()
                         tasksToDOM()
@@ -467,8 +492,19 @@ const UIhandler = (() => {
 
             case "task":
                 deleteConfirmYesBtn.addEventListener("click",(e)=>{
-                    updateCurrentTask(taskName)
+                    updateCurrentTask(taskName, taskParent)
+                    if (currentProjectName == "All Projects") {
+                        projectArray.forEach((project)=>{
+                            if (project.name == currentTask.parent) {
+                                project.deleteTask(currentTask)
+                            }
+                        })
                     currentProject.deleteTask(currentTask)
+                    } 
+                    else { 
+                        currentProject.deleteTask(currentTask)
+                        projectArray[0].deleteTask(currentTask)
+                    }
                     tasksToDOM()
                     removeGrandParentElement(e.currentTarget)
                 })
@@ -506,14 +542,14 @@ const UIhandler = (() => {
         
         // Other
         nameErrMsg.innerText = "A project of this name already exists"
-        projectErrMsg.innerText = "You Can't Change the name of the Default Project"
+        projectErrMsg.innerText = "You Can't Change The Name of This Project!"
 
         // Appending
         formProject.append(inputText,inputSubmitProject)
         projectLabel.append(formProject)
         
         // Event Listeners
-        if (currentProjectName !== "Default Project") {
+        if (currentProjectName !== "All Projects") {
             inputSubmitProject.addEventListener("click",(e)=>{
                 e.preventDefault()
                 updateCurrentProject()
@@ -535,6 +571,10 @@ const UIhandler = (() => {
                     projectLabel.append(currentProjectDisplay)
                     currentProjectName = currentProject.name
                     currentProjectDisplay.innerText = currentProjectName
+                    currentProject.tasks.forEach((task)=>{
+                        task.parent = currentProjectName
+                    })
+                    tasksToDOM()
                     removeParentElement(e.currentTarget)
                 }
             })
@@ -595,14 +635,14 @@ const UIhandler = (() => {
         // Event Listeners
         taskEditBtn.addEventListener("click",(e)=>{
             if (!document.contains(document.querySelector(".taskEditForm"))) {
-                updateCurrentTask(e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText)
+                updateCurrentTask(e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText, e.currentTarget.parentElement.parentElement.querySelector(".taskParent").innerText)
                 taskEditForm(currentTask)
             }
         })
 
         taskDeleteBtn.addEventListener("click",(e)=>{
             if (!document.contains(document.querySelector(".deleteConfirmBox"))) {
-                deleteConfirmBox("task",e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText)
+                deleteConfirmBox("task",e.currentTarget.parentElement.parentElement.querySelector(".taskName").innerText,e.currentTarget.parentElement.parentElement.querySelector(".taskParent").innerText)
             }
         })
     }
