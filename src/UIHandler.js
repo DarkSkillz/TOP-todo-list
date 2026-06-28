@@ -15,6 +15,7 @@ const UIhandler = (() => {
     let currentProject = projectArray[0]
     let currentTask = undefined
     let currentTab = "AllTime"
+    let deleteIndex = []
 
     // Functions
     //* Project Form
@@ -476,12 +477,14 @@ const UIhandler = (() => {
                     deleteConfirmYesBtn.addEventListener("click",(e)=>{
                         Librarian.deleteProject(currentProject)
                         projectArray[0].tasks.forEach((task)=>{
-                            if (!projectNames.includes(task.parent)) {
-                                console.log(projectNames)
-                                projectArray[0].deleteTask(task)
-                                //! WHY ISN'T THIS WORKING 
+                            if (task.parent == currentProjectName) {
+                                deleteIndex.push(task)
                             }
                         })
+                        deleteIndex.forEach((task)=>{
+                            projectArray[0].deleteTask(task)
+                        })
+                        deleteIndex = []
                         resetCurrentProject()
                         projectsToDOM()
                         tasksToDOM()
