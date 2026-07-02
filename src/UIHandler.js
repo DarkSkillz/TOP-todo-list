@@ -61,6 +61,7 @@ const UIhandler = (() => {
             else {
                 const projectName = data.name.trim().replace(/\s+/g, " ")
                 Librarian.addProject(projectName)
+                localStorageHandler("project")
                 projectsToDOM()
                 removeParentElement(e.currentTarget)
             }
@@ -286,6 +287,7 @@ const UIhandler = (() => {
                     currentProject.addTask(new Task(taskName, currentProjectName,data.date, data.priority, data.status))
                     updateCurrentTask(taskName, currentProjectName)
                     projectArray[0].addTask(currentTask)
+                    localStorageHandler("task")
                     tasksToDOM()
                     removeParentElement(e.currentTarget)
                 }
@@ -654,6 +656,18 @@ const UIhandler = (() => {
     const timeLoad = (time) => {
         currentTab = time
         tasksToDOM()
+    }
+
+    //* Local Storage Handler
+    const localStorageHandler = () => {
+        projectArray.forEach((project)=>{
+            localStorage.setItem(project.name, "")
+            project.tasks.forEach((task)=>{
+                localStorage.setItem(project.name,localStorage.getItem(project.name)+`${task.name},${task.parent},${task.date},${task.priority},${task.status}/`)
+            })
+        })
+        console.log(localStorage)
+        //todo Make a function that adds projects/tasks from local storage upon load
     }
 
     return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, timeLoad}

@@ -72,8 +72,12 @@ allTimeTab.addEventListener("click",()=>{
     UIhandler.timeLoad("AllTime")
 })
 
+//! Debug Only
+document.querySelector(".temp").addEventListener("click",()=>{
+    localStorage.clear()
+    console.log(localStorage)
+})
 
 // TODOs
-//todo All Projects Option
 //todo Local Storage
 //todo Styling
