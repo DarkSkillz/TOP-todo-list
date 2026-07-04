@@ -21,11 +21,7 @@ const allTimeTab = document.getElementById("allTimeTab")
 
 // Main Codespace
 Librarian.addProject("All Projects")
-/* Librarian.addProject("testProject")
-projectArray[1].addTask(new Task("1","pro2","2026-06-25","High","Completed"))
-projectArray[1].addTask(new Task("2","pro2","2026-06-25","High","Completed"))
-projectArray[1].addTask(new Task("3","pro2","2026-06-25","High","Completed")) */
-UIhandler.projectsToDOM()
+UIhandler.loadLocalStorage()
 
 // Event Listeners
 addProjectBtn.addEventListener("click",()=>{
@@ -79,5 +75,4 @@ document.querySelector(".temp").addEventListener("click",()=>{
 })
 
 // TODOs
-//todo Local Storage
 //todo Styling

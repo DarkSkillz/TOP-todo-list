@@ -15,7 +15,6 @@ const UIhandler = (() => {
     let currentProject = projectArray[0]
     let currentTask = undefined
     let currentTab = "AllTime"
-    let deleteIndex = []
 
     // Functions
     //* Project Form
@@ -61,7 +60,7 @@ const UIhandler = (() => {
             else {
                 const projectName = data.name.trim().replace(/\s+/g, " ")
                 Librarian.addProject(projectName)
-                localStorageHandler("project")
+                addToLocalStorage()
                 projectsToDOM()
                 removeParentElement(e.currentTarget)
             }
@@ -286,8 +285,8 @@ const UIhandler = (() => {
                     const taskName = data.name.trim().replace(/\s+/g, " ")
                     currentProject.addTask(new Task(taskName, currentProjectName,data.date, data.priority, data.status))
                     updateCurrentTask(taskName, currentProjectName)
-                    projectArray[0].addTask(currentTask)
-                    localStorageHandler("task")
+                    allProjectsHandler()
+                    addToLocalStorage()
                     tasksToDOM()
                     removeParentElement(e.currentTarget)
                 }
@@ -426,12 +425,15 @@ const UIhandler = (() => {
             else if (currentProject.taskNames.includes(taskName) && currentTask.name !== taskName) {
                 formTask.append(nameErrMsg)
             }
+
             else {
                 currentTask.name = taskName
                 currentTask.date = data.date
                 currentTask.priority = data.priority
                 currentTask.status = data.status
+                allProjectsHandler()
                 tasksToDOM()
+                addToLocalStorage()
                 removeParentElement(e.currentTarget)
             }
         })
@@ -478,18 +480,11 @@ const UIhandler = (() => {
                     updateCurrentProject()
                     deleteConfirmYesBtn.addEventListener("click",(e)=>{
                         Librarian.deleteProject(currentProject)
-                        projectArray[0].tasks.forEach((task)=>{
-                            if (task.parent == currentProjectName) {
-                                deleteIndex.push(task)
-                            }
-                        })
-                        deleteIndex.forEach((task)=>{
-                            projectArray[0].deleteTask(task)
-                        })
-                        deleteIndex = []
+                        allProjectsHandler()
                         resetCurrentProject()
                         projectsToDOM()
                         tasksToDOM()
+                        addToLocalStorage()
                         removeGrandParentElement(e.currentTarget)
                     })
                 }
@@ -498,19 +493,14 @@ const UIhandler = (() => {
             case "task":
                 deleteConfirmYesBtn.addEventListener("click",(e)=>{
                     updateCurrentTask(taskName, taskParent)
-                    if (currentProjectName == "All Projects") {
-                        projectArray.forEach((project)=>{
-                            if (project.name == currentTask.parent) {
-                                project.deleteTask(currentTask)
-                            }
-                        })
-                    currentProject.deleteTask(currentTask)
-                    } 
-                    else { 
-                        currentProject.deleteTask(currentTask)
-                        projectArray[0].deleteTask(currentTask)
-                    }
+                    projectArray.forEach((project)=>{
+                        if (project.name == currentTask.parent) {
+                            project.deleteTask(currentTask)
+                        }
+                    })
+                    allProjectsHandler()
                     tasksToDOM()
+                    addToLocalStorage()
                     removeGrandParentElement(e.currentTarget)
                 })
                 break
@@ -568,7 +558,9 @@ const UIhandler = (() => {
                     inputText.style.borderColor = "red"
                 }
                 else {
+                    projectNames.splice(projectNames.indexOf(currentProject.name),1)
                     currentProject.name = projectName
+                    projectNames.push(currentProject.name)
                     projectsToDOM()
                     projectLabel.replaceChildren()
                     const currentProjectDisplay = document.createElement("p")
@@ -579,7 +571,9 @@ const UIhandler = (() => {
                     currentProject.tasks.forEach((task)=>{
                         task.parent = currentProjectName
                     })
+                    allProjectsHandler()
                     tasksToDOM()
+                    addToLocalStorage()
                     removeParentElement(e.currentTarget)
                 }
             })
@@ -658,19 +652,52 @@ const UIhandler = (() => {
         tasksToDOM()
     }
 
-    //* Local Storage Handler
-    const localStorageHandler = () => {
+    //* All Projects Handler
+    const allProjectsHandler = () => {
+        projectArray[0].tasks = []
+        for (let i = 1; i < projectArray.length; i++) {
+            projectArray[i].tasks.forEach((task)=>{
+                projectArray[0].addTask(task)
+            })
+        }
+    }
+
+    //* Add to Local Storage
+    const addToLocalStorage = () => {
+        localStorage.clear()
         projectArray.forEach((project)=>{
             localStorage.setItem(project.name, "")
             project.tasks.forEach((task)=>{
-                localStorage.setItem(project.name,localStorage.getItem(project.name)+`${task.name},${task.parent},${task.date},${task.priority},${task.status}/`)
+                localStorage.setItem(project.name,localStorage.getItem(project.name)+`${task.name},dataSeparator,${task.parent},dataSeparator,${task.date},dataSeparator,${task.priority},dataSeparator,${task.status}/taskSeparator/`)
             })
         })
-        console.log(localStorage)
-        //todo Make a function that adds projects/tasks from local storage upon load
     }
 
-    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, timeLoad}
+    //* Load Local Storage
+    const loadLocalStorage = () => {
+        for (let i = 0; i < localStorage.length; i++) {
+            const project = localStorage.key(i)
+            if (!projectNames.includes(project)) {
+                Librarian.addProject(project)
+            }
+            currentProjectName = project
+            updateCurrentProject()
+            const tasks = localStorage.getItem(project)
+            const separatedTasks = tasks.split("/taskSeparator/")
+            separatedTasks.forEach((task)=>{
+                const separatedData = task.split(",dataSeparator,")
+                if (task !== "") {
+                    currentProject.addTask(new Task(separatedData[0],separatedData[1],separatedData[2],separatedData[3],separatedData[4],))
+                }
+            })
+        }
+        currentProjectName = "All Projects"
+        updateCurrentProject()
+        tasksToDOM()
+        projectsToDOM()
+    }
+
+    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, timeLoad, loadLocalStorage}
 })()
 
 export default UIhandler
