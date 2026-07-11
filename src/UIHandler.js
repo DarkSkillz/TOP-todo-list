@@ -5,6 +5,7 @@ const UIhandler = (() => {
     // Globals
     const aside = document.querySelector("aside")
     const main = document.querySelector("main")
+    const projectHolder = document.querySelector(".addProjectHolder")
     const taskCardSection = document.querySelector(".taskCardSection")
     const projectList = document.querySelector(".projectList")
     const projectLabel = document.querySelector(".projectLabel")
@@ -24,12 +25,14 @@ const UIhandler = (() => {
         const inputText = document.createElement("input")
         const inputSubmitProject = document.createElement("input")
         const nameErrMsg = document.createElement("span")
+        const cancelSVG = document.createElement("span")
         
         // Classes & IDs
         formProject.className = "addProjectForm"
         inputText.className = "addFormProjectInputText"
         inputSubmitProject.className = "inputSubmitProject"
         inputText.id = "projectInputText"
+        cancelSVG.className = "SVGHolder"
         nameErrMsg.className = "nameErrMsg"
 
         // Attributes
@@ -41,12 +44,18 @@ const UIhandler = (() => {
         
         // Other
         nameErrMsg.innerText = "A project of this name already exists"
+        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Cancel</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
+
 
         // Appending
-        formProject.append(inputText,inputSubmitProject)
-        aside.append(formProject)
+        formProject.append(inputText,inputSubmitProject,cancelSVG)
+        projectHolder.append(formProject)
         
         // Event Listeners
+        cancelSVG.addEventListener("click",(e)=>{
+            removeParentElement(e.currentTarget)
+        })
+        
         inputSubmitProject.addEventListener("click",(e)=>{
             e.preventDefault()
             const formData = new FormData(formProject)

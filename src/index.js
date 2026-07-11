@@ -73,6 +73,3 @@ document.querySelector(".temp").addEventListener("click",()=>{
     localStorage.clear()
     console.log(localStorage)
 })
-
-// TODOs
-//todo Styling
