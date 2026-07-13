@@ -39,7 +39,9 @@ main {
 
 .timeTab {
     background-color: rgba(116, 14, 184, 0.432);
-    padding: 50px 130px;
+    padding: 50px 115px;
+    font-size: 1.3rem;
+    font-weight: 600;
     border: 2px solid black;
     border-top: 0;
     border-bottom: 0;
@@ -119,4 +121,110 @@ main {
 
 .projectItem {
     padding: 5px 0;
+}
+
+.taskCardSection {
+    border: 1px solid orange;
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.taskCardUpper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.taskCard {
+    border: 1px solid rgb(173, 25, 187);
+    padding: 25px 45px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    font-size: 1.2rem;
+}
+
+.taskEdit, .taskDelete {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #fff;
+    padding: 10px;
+    margin: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.currentProject {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 15px;
+}
+
+.addTask, .deleteProject, .editName, .inputSubmitTask, .inputEditTask {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #fff;
+    padding: 10px;
+    margin: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.editProjectForm {
+    display: flex;
+    align-items: center;
+}
+
+.nameErrMsg, .taskErrMsg {
+    font-size: 1.2rem;
+}
+
+.deleteConfirmYes, .deleteConfirmNo {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #fff;
+    padding: 10px;
+    margin: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.taskCreationForm, .taskEditForm {
+    border: 3px solid #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: max-content;
+    padding: 25px;
+    font-size: 1.2rem;
+    gap: 10px;
+}
+
+.taskCreationForm label {
+    margin-right: 10px;
+}
+
+.taskCreationForm input, .taskCreationForm select{
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.taskEditForm label {
+    margin-right: 10px;
+}
+
+.taskEditForm input, .taskEditForm select{
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+#allTimeTab {
+    background-color: rgba(178, 14, 184, 0.432);
 }

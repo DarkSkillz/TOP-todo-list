@@ -48,24 +48,34 @@ editNameBtn.addEventListener("click",()=>{
     }
 })
 
-todayTab.addEventListener("click",()=>{
+todayTab.addEventListener("click",(e)=>{
     UIhandler.timeLoad("Today")
+    UIhandler.resetColors()
+    e.currentTarget.style.backgroundColor = "rgba(178, 14, 184, 0.432)"
 })
 
-weekTab.addEventListener("click",()=>{
+weekTab.addEventListener("click",(e)=>{
     UIhandler.timeLoad("Week")
+    UIhandler.resetColors()
+    e.currentTarget.style.backgroundColor = "rgba(178, 14, 184, 0.432)"
 })
 
-monthTab.addEventListener("click",()=>{
+monthTab.addEventListener("click",(e)=>{
     UIhandler.timeLoad("Month")
+    UIhandler.resetColors()
+    e.currentTarget.style.backgroundColor = "rgba(178, 14, 184, 0.432)"
 })
 
-yearTab.addEventListener("click",()=>{
+yearTab.addEventListener("click",(e)=>{
     UIhandler.timeLoad("Year")
+    UIhandler.resetColors()
+    e.currentTarget.style.backgroundColor = "rgba(178, 14, 184, 0.432)"
 })
 
-allTimeTab.addEventListener("click",()=>{
+allTimeTab.addEventListener("click",(e)=>{
     UIhandler.timeLoad("AllTime")
+    UIhandler.resetColors()
+    e.currentTarget.style.backgroundColor = "rgba(178, 14, 184, 0.432)"
 })
 
 //! Debug Only

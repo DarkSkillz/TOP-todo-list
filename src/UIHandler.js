@@ -206,6 +206,7 @@ const UIhandler = (() => {
         taskStatusInputDiv.className = "taskStatusInputDiv"
         inputSubmitTask.className = "inputSubmitTask"
         nameErrMsg.className = "nameErrMsg"
+        taskErrMsg.className = "taskErrMsg"
         inputName.id = "name"
         inputDate.id = "date"
         selectElement.id = "priority"
@@ -528,6 +529,7 @@ const UIhandler = (() => {
         const inputSubmitProject = document.createElement("input")
         const nameErrMsg = document.createElement("span")
         const projectErrMsg = document.createElement("span")
+        const cancelSVG = document.createElement("span")
         
         // Classes & IDs
         formProject.className = "editProjectForm"
@@ -547,12 +549,17 @@ const UIhandler = (() => {
         // Other
         nameErrMsg.innerText = "A project of this name already exists"
         projectErrMsg.innerText = "You Can't Change The Name of This Project!"
+        cancelSVG.innerHTML = '<svg class="cancelSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Cancel</title><path d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" /></svg>'
 
         // Appending
-        formProject.append(inputText,inputSubmitProject)
+        formProject.append(inputText,inputSubmitProject,cancelSVG)
         projectLabel.append(formProject)
         
         // Event Listeners
+        cancelSVG.addEventListener("click",(e)=>{
+            removeParentElement(e.currentTarget)
+        })
+
         if (currentProjectName !== "All Projects") {
             inputSubmitProject.addEventListener("click",(e)=>{
                 e.preventDefault()
@@ -589,6 +596,7 @@ const UIhandler = (() => {
         }
         else {
             formProject.removeChild(inputText)
+            formProject.removeChild(cancelSVG)
             formProject.append(projectErrMsg)
             inputSubmitProject.setAttribute("value","Go Back")
 
@@ -661,6 +669,13 @@ const UIhandler = (() => {
         tasksToDOM()
     }
 
+    //* Reset Colors
+    const resetColors = () => {
+        document.querySelectorAll(".timeTab").forEach((tab)=>{
+            tab.style.backgroundColor = "rgba(116, 14, 184, 0.432)"
+        })
+    }
+    
     //* All Projects Handler
     const allProjectsHandler = () => {
         projectArray[0].tasks = []
@@ -706,7 +721,7 @@ const UIhandler = (() => {
         projectsToDOM()
     }
 
-    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, timeLoad, loadLocalStorage}
+    return {addProjectForm, projectsToDOM, removeParentElement, removeGrandParentElement, taskCreationForm, taskEditForm, deleteConfirmBox, addTaskCard, editProjectName, timeLoad, loadLocalStorage, resetColors}
 })()
 
 export default UIhandler
