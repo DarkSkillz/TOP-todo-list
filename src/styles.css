@@ -53,10 +53,6 @@ main {
     fill: #860c0c;
 }
 
-.hidden {
-    display: none;
-}
-
 .addProjectForm {
     display: grid;
     grid-template-columns: 2;

@@ -75,9 +75,3 @@ allTimeTab.addEventListener("click",(e)=>{
     UIhandler.resetColors()
     e.currentTarget.style.backgroundColor = "rgba(178, 14, 184, 0.432)"
 })
-
-//! Debug Only
-document.querySelector(".temp").addEventListener("click",()=>{
-    localStorage.clear()
-    console.log(localStorage)
-})
