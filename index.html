@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+<script defer src="main.js"></script></head>
+<body>
+
+    <header>
+        <div class="timeTab" id="todayTab">Today</div>
+        <div class="timeTab" id="weekTab">This Week</div>
+        <div class="timeTab" id="monthTab">This Month</div>
+        <div class="timeTab" id="yearTab">This Year</div>
+        <div class="timeTab" id="allTimeTab">All Time</div>
+    </header>
+
+    <aside>
+        <!--! Debug Only -->
+        <button class="temp hidden">Clear</button>
+        
+        <div class="addProjectHolder">
+            <button class="addProjectBtn">Add Project</button>
+        </div>
+        <div class="projectListDiv">
+            <p>Your Projects</p>
+            <ul class="projectList">
+
+            </ul>
+        </div>
+    </aside>
+
+    <main>
+        <div class="projectLabel">
+            <p class="currentProject">All Projects</p>
+        </div>
+
+        <div class="projectConfig">
+            <button class="addTask">Add Task</button>
+            <button class="deleteProject">Delete Project</button>
+            <button class="editName">Edit Name</button>
+        </div>
+
+        <section class="taskCardSection">
+
+        </section>
+    </main>
+    
+</body>
+</html>
