@@ -1,8 +1,6 @@
 import "./styles.css"; 
 import { Project, Task, Librarian } from "./classes.js";
 import UIhandler from "./UIHandler.js";
-import functionLoader from "./tabLoader.js"
-import tabLoader from "./tabLoader.js";
 
 // Globals
 const aside = document.querySelector("aside")
