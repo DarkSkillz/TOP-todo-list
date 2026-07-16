@@ -12,9 +12,9 @@ body {
     display: grid;
     grid-template-columns: 1fr auto;
     grid-template-rows: auto 1fr;
-    grid-template-areas: 
-    "aside header"
-    "aside main";
+    grid-template-areas:
+        'aside header'
+        'aside main';
     background-color: #000;
     color: #fff;
     height: 100vh;
@@ -45,7 +45,6 @@ main {
     border: 2px solid black;
     border-top: 0;
     border-bottom: 0;
-    text-wrap: nowrap;
 }
 
 .cancelSVG {
@@ -55,8 +54,8 @@ main {
 
 .addProjectForm {
     display: grid;
-    grid-template-columns: 2;
-    grid-template-rows: 2;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
     margin-bottom: 20px;
 }
 
@@ -123,7 +122,6 @@ main {
     border: 1px solid orange;
     display: flex;
     flex-wrap: wrap;
-    
 }
 
 .taskCardUpper {
@@ -142,7 +140,8 @@ main {
     font-size: 1.2rem;
 }
 
-.taskEdit, .taskDelete {
+.taskEdit,
+.taskDelete {
     border: 2px solid #fff;
     border-radius: 10px;
     background-color: transparent;
@@ -159,7 +158,11 @@ main {
     margin: 15px;
 }
 
-.addTask, .deleteProject, .editName, .inputSubmitTask, .inputEditTask {
+.addTask,
+.deleteProject,
+.editName,
+.inputSubmitTask,
+.inputEditTask {
     border: 2px solid #fff;
     border-radius: 10px;
     background-color: transparent;
@@ -175,11 +178,13 @@ main {
     align-items: center;
 }
 
-.nameErrMsg, .taskErrMsg {
+.nameErrMsg,
+.taskErrMsg {
     font-size: 1.2rem;
 }
 
-.deleteConfirmYes, .deleteConfirmNo {
+.deleteConfirmYes,
+.deleteConfirmNo {
     border: 2px solid #fff;
     border-radius: 10px;
     background-color: transparent;
@@ -190,7 +195,8 @@ main {
     font-weight: 600;
 }
 
-.taskCreationForm, .taskEditForm {
+.taskCreationForm,
+.taskEditForm {
     border: 3px solid #fff;
     border-radius: 10px;
     display: flex;
@@ -207,7 +213,8 @@ main {
     margin-right: 10px;
 }
 
-.taskCreationForm input, .taskCreationForm select{
+.taskCreationForm input,
+.taskCreationForm select {
     padding: 5px;
     font-size: 1.2rem;
 }
@@ -216,7 +223,8 @@ main {
     margin-right: 10px;
 }
 
-.taskEditForm input, .taskEditForm select{
+.taskEditForm input,
+.taskEditForm select {
     padding: 5px;
     font-size: 1.2rem;
 }
